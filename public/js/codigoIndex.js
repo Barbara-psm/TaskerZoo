@@ -1,0 +1,233 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const intro = document.getElementById('introTaskerZoo'); // Logo de taskerzoo que se desvanece
+    const introText = intro.querySelector('h1'); // Texto que se desvanece
+    const btnEntrar = document.getElementById('btnEntrar'); // Botón para acceder a la gestión interna
+    const formularioNombreZoo = document.getElementById('formularioNombreZoo'); // Div con el formulario para el nombre del zoo
+    const formNombreZoo = document.getElementById('formNombreZoo'); // Formulario para el nombre del zoo
+    const formularioSignUp = document.getElementById('formularioSignUp'); // Div con el formulario para el registo de empleado
+    const formSignUp = document.getElementById('formSignUp'); // Formulario para el registro de empleado
+    const formularioLogin = document.getElementById('formularioLogin'); // Div con el formulario para el login
+    const formLogin = document.getElementById('formLogin'); // Formulario para el inicio de sesión
+    const mensajeErrorRegistro = document.getElementById('mensajeErrorRegistro'); // Línea para mostrar el tipo de error del registro
+    const mensajeErrorLogin = document.getElementById('mensajeErrorLogin'); // Línea para mostrar el tipo de error del registro
+    const irAlLogin = document.getElementById('irAlLogin'); // Enlace para ir al formulario de login desde el de registro
+    const irAlSignup = document.getElementById('irAlSignup'); // Enlace para ir al formulario de registro desde el de login
+
+    // Fade in
+    setTimeout(() => {
+        introText.classList.add('opacity-100');
+    }, 100); // Pequeño delay para asegurar carga
+
+    // Esperar 3 segundos, luego fade out
+    setTimeout(() => {
+        introText.classList.remove('opacity-100');
+        introText.classList.add('opacity-0');
+    }, 3100);
+
+    // Mostrar el botón Entrar
+    setTimeout(() => {
+        intro.classList.add('hidden');
+        btnEntrar.classList.remove('hidden');
+        setTimeout(() => {
+            btnEntrar.classList.add('opacity-100');
+        }, 100);
+    }, 4100);
+
+    // Función para leer cookies (similar a Cookies.get())
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // funcion mejorada para leer cookies?
+    // function getCookie(name) {
+    //     const cookies = document.cookie.split(';');
+    //     for (let cookie of cookies) {
+    //         const [cookieName, cookieValue] = cookie.trim().split('=');
+    //         if (cookieName === name) return decodeURIComponent(cookieValue);
+    //     }
+    //     return null;
+    // }
+
+    // Evento para decidir que div se muestra o si se redirige al dashboard dependiendo del localStorage y la Cookie
+    btnEntrar.addEventListener('click', function () {
+        const nombreZoo = localStorage.getItem('nombreZoo');
+        const cookieSesion = getCookie('sesion'); // Cambio aquí
+
+        // Caso 1: No hay nombreZoo ni cookie de sesión
+        if (!nombreZoo && !cookieSesion) {
+            formularioNombreZoo.classList.remove('hidden');
+        }
+        // Caso 2: Hay nombreZoo pero no cookie de sesión
+        else if (nombreZoo && !cookieSesion) {
+            formularioLogin.classList.remove('hidden');
+        }
+        // Caso 3: No hay nombreZoo pero sí cookie de sesión
+        else if (!nombreZoo && cookieSesion) {
+            fetch('/obtener-zoo', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.nombreZoo) {
+                        localStorage.setItem('nombreZoo', data.nombreZoo);
+                        window.location.href = '/dashboard';
+                    }
+                });
+        }
+        // Caso 4: Hay nombreZoo y cookie de sesión
+        else {
+            window.location.href = '/dashboard';
+        }
+    });
+
+    // Guardar nombre del zoo
+    formNombreZoo.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Deshabilitar botón y cambiar texto
+        const submitButton = formNombreZoo.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+        submitButton.textContent = "Guardando...";
+
+        const nombre = document.getElementById('nombreZoo').value.trim();
+
+        // Validación con expresión regular
+        const regex = /^[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]{3,50}$/;
+        if (!regex.test(nombre)) {
+            alert('El nombre debe tener entre 3 y 50 caracteres y solo puede contener letras y espacios');
+            resetButtonState();
+            return;
+        }
+
+        // Guardar en localStorage y enviar al backend
+        localStorage.setItem('nombreZoo', nombre);
+
+        fetch('/registrarZoo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombreZoo: nombre })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.message) });
+                }
+                return response.json();
+            })
+            .then(() => {
+                formularioNombreZoo.classList.add('hidden');
+                formularioSignUp.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message || 'Error al registrar el zoológico');
+            })
+            .finally(() => {
+                // Restaurar botón (se ejecuta siempre)
+                resetButtonState();
+            });
+
+        function resetButtonState() {
+            submitButton.disabled = false;
+            submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            submitButton.textContent = originalText;
+        }
+        formNombreZoo.classList.add('hidden');
+        formularioSignUp.classList.remove('hidden');
+    });
+
+    // Manejar el registro de empleados
+    formSignUp.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const nombre = formSignUp.newUser.value.trim();
+        const rol = formSignUp.newRol.value.trim();
+        const email = formSignUp.newEmail.value.trim();
+        const contraseña = formSignUp.newPassword.value.trim();
+        const idZooName = localStorage.getItem('nombreZoo');
+
+        if (!nombre || !email || !contraseña) {
+            alert('Por favor, completa todos los campos.');
+            return;
+        }
+
+        try {
+            const respuesta = await fetch('/registrarEmpleado', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre, rol, email, contraseña, idZooName })
+            });
+
+            const resultado = await respuesta.json();
+
+            if (!respuesta.ok) {
+                throw new Error(resultado.message);
+            }
+
+            // Ocultar el formulario de registro
+            formularioSignUp.classList.add('hidden');
+
+            // Mostrar el formulario de login
+            formularioLogin.classList.remove('hidden');
+
+            alert('Empleado creado exitosamente.');
+        } catch (error) {
+            console.error('Error al registrar empleado:', error);
+            mensajeErrorRegistro.innerHTML = "Este correo no está disponible";
+        }
+    });
+
+    // Manejar el inicio de sesión del empleado
+    formLogin.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        
+        const email = formLogin.empleadoEmail.value.trim();
+        const contraseña = formLogin.empleadoPassword.value.trim();
+
+        if (!email || !contraseña) {
+            alert('Por favor, completa todos los campos.');
+            return;
+        }
+        try {
+            const respuesta = await fetch('/loginEmpleado', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, contraseña })
+            });
+
+            const resultado = await respuesta.json();
+
+            if (!respuesta.ok) {
+                throw new Error(resultado.message);
+            }
+            
+            window.location.href = '/dashboard';
+
+        } catch (error) {
+            console.error('Error al iniciar sesión', error);
+            mensajeErrorLogin.innerHTML = "No se ha podido iniciar sesión";
+        }
+    });
+
+    // Ir a login desde registro
+    irAlLogin.addEventListener('click', function () {
+        formularioSignUp.classList.add('hidden');
+        formularioLogin.classList.remove('hidden');
+    });
+
+    // Ir a signup desde login
+    irAlSignup.addEventListener('click', function () {
+        formularioLogin.classList.add('hidden');
+        formularioSignUp.classList.remove('hidden');
+    });
+
+});
