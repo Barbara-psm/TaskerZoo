@@ -50,18 +50,6 @@ app.get('/', (req, res) => {
     res.render('index.ejs');
 });
 
-// Registrar Zoo
-app.post('/registrarZoo', async (req, res) => {
-    try {
-        const { nombreZoo } = req.body;
-        // Validación ? 
-        const nuevoZoo = new Zoo({ nombre: nombreZoo });
-        await nuevoZoo.save();
-    } catch (error) {
-        console.error('Error al guardar el zoológico: ', error);
-    }
-});
-
 // Registro empleado
 app.post('/registrarEmpleado', async (req, res) => {
     const { nombre, rol, email, contraseña, idZooName } = req.body;
@@ -130,12 +118,29 @@ app.post('/loginEmpleado', async (req, res) => {
 
 // Dashboard
 app.get('/dashboard', async (req, res) => {
+    if (!req.session.usuario) {
+        return res.redirect('/');
+    }
+
     try {
-        res.render('dashboard', { nombreEmpleado: req.session.usuario?.nombre || 'Empleado', paginaActual: 'dashboard' });
+        res.render('dashboard', {
+            nombreEmpleado: req.session.usuario?.nombre || 'Bienvenido',
+            paginaActual: 'dashboard'
+        });
     } catch (error) {
         console.log('Error al acceder al dashboard', error);
+        res.status(500).send('Error interno del servidor');
     }
 });
+
+app.get('/verificarSesion', (req, res) => {
+    if (req.session.usuario) {
+        return res.json({ sesionActiva: true });
+    } else {
+        return res.json({ sesionActiva: false });
+    }
+});
+
 
 // Gestión de animales
 app.get('/animales', async (req, res) => {

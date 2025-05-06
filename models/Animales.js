@@ -10,7 +10,7 @@ const animalSchema = new Schema({
   // zonaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zona' },
   zona: String,
   otrosDatos: String,
-  zooId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zoo', required: true },
+  // zooId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zoo', required: true },
 }, { timestamps: true });
 
 const Animal = mongoose.model('Animal', animalSchema);

@@ -7,7 +7,7 @@ const suministroSchema = new Schema({
   descripcion: String,
   // zonaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zona' },
   zona: String,
-  zooId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zoo', required: true },
+  // zooId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zoo', required: true },
 }, { timestamps: true });
 
 const Suministro = mongoose.model('Suministro', suministroSchema);

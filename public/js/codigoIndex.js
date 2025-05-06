@@ -2,8 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const intro = document.getElementById('introTaskerZoo'); // Logo de taskerzoo que se desvanece
     const introText = intro.querySelector('h1'); // Texto que se desvanece
     const btnEntrar = document.getElementById('btnEntrar'); // Botón para acceder a la gestión interna
-    const formularioNombreZoo = document.getElementById('formularioNombreZoo'); // Div con el formulario para el nombre del zoo
-    const formNombreZoo = document.getElementById('formNombreZoo'); // Formulario para el nombre del zoo
     const formularioSignUp = document.getElementById('formularioSignUp'); // Div con el formulario para el registo de empleado
     const formSignUp = document.getElementById('formSignUp'); // Formulario para el registro de empleado
     const formularioLogin = document.getElementById('formularioLogin'); // Div con el formulario para el login
@@ -34,10 +32,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 4100);
 
     // Función para leer cookies (similar a Cookies.get())
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
+    function getCookie(nombre) {
+        const valor = `; ${document.cookie}`;
+        const partes = valor.split(`; ${nombre}=`);
+        if (partes.length === 2) return partes.pop().split(';').shift();
     }
 
     // funcion mejorada para leer cookies?
@@ -50,95 +48,20 @@ document.addEventListener('DOMContentLoaded', function () {
     //     return null;
     // }
 
-    // Evento para decidir que div se muestra o si se redirige al dashboard dependiendo del localStorage y la Cookie
-    btnEntrar.addEventListener('click', function () {
-        const nombreZoo = localStorage.getItem('nombreZoo');
-        const cookieSesion = getCookie('sesion'); // Cambio aquí
+    btnEntrar.addEventListener('click', async function () {
+        try {
+            const respuesta = await fetch('/verificarSesion');
+            const resultado = await respuesta.json();
 
-        // Caso 1: No hay nombreZoo ni cookie de sesión
-        if (!nombreZoo && !cookieSesion) {
-            formularioNombreZoo.classList.remove('hidden');
-        }
-        // Caso 2: Hay nombreZoo pero no cookie de sesión
-        else if (nombreZoo && !cookieSesion) {
+            if (resultado.sesionActiva) {
+                window.location.href = '/dashboard';
+            } else {
+                formularioLogin.classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error('Error verificando sesión:', error);
             formularioLogin.classList.remove('hidden');
         }
-        // Caso 3: No hay nombreZoo pero sí cookie de sesión
-        else if (!nombreZoo && cookieSesion) {
-            fetch('/obtener-zoo', {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.nombreZoo) {
-                        localStorage.setItem('nombreZoo', data.nombreZoo);
-                        window.location.href = '/dashboard';
-                    }
-                });
-        }
-        // Caso 4: Hay nombreZoo y cookie de sesión
-        else {
-            window.location.href = '/dashboard';
-        }
-    });
-
-    // Guardar nombre del zoo
-    formNombreZoo.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        // Deshabilitar botón y cambiar texto
-        const submitButton = formNombreZoo.querySelector('button[type="submit"]');
-        const originalText = submitButton.textContent;
-        submitButton.disabled = true;
-        submitButton.classList.add('opacity-50', 'cursor-not-allowed');
-        submitButton.textContent = "Guardando...";
-
-        const nombre = document.getElementById('nombreZoo').value.trim();
-
-        // Validación con expresión regular
-        const regex = /^[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]{3,50}$/;
-        if (!regex.test(nombre)) {
-            alert('El nombre debe tener entre 3 y 50 caracteres y solo puede contener letras y espacios');
-            resetButtonState();
-            return;
-        }
-
-        // Guardar en localStorage y enviar al backend
-        localStorage.setItem('nombreZoo', nombre);
-
-        fetch('/registrarZoo', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombreZoo: nombre })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw new Error(err.message) });
-                }
-                return response.json();
-            })
-            .then(() => {
-                formularioNombreZoo.classList.add('hidden');
-                formularioSignUp.classList.remove('hidden');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert(error.message || 'Error al registrar el zoológico');
-            })
-            .finally(() => {
-                // Restaurar botón (se ejecuta siempre)
-                resetButtonState();
-            });
-
-        function resetButtonState() {
-            submitButton.disabled = false;
-            submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
-            submitButton.textContent = originalText;
-        }
-        formNombreZoo.classList.add('hidden');
-        formularioSignUp.classList.remove('hidden');
     });
 
     // Manejar el registro de empleados
@@ -187,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Manejar el inicio de sesión del empleado
     formLogin.addEventListener('submit', async function (e) {
         e.preventDefault();
-        
+
         const email = formLogin.empleadoEmail.value.trim();
         const contraseña = formLogin.empleadoPassword.value.trim();
 
@@ -209,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!respuesta.ok) {
                 throw new Error(resultado.message);
             }
-            
+
             window.location.href = '/dashboard';
 
         } catch (error) {

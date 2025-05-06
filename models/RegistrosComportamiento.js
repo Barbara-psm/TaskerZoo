@@ -6,7 +6,7 @@ const comportamientoSchema = new Schema({
   fecha: { type: Date, default: Date.now },
   descripcion: String,
   cuidador: { type: mongoose.Schema.Types.ObjectId, ref: 'Empleado' },
-  zooId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zoo', required: true },
+  // zooId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zoo', required: true },
 }, { timestamps: true });
 
 const RegistroComportamiento = mongoose.model('RegistroComportamiento', comportamientoSchema);

@@ -1,72 +1,149 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskerZoo - Dashboard</title>
-    <link rel="stylesheet" href="/css/estiloTaskerZooOutput.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskerZoo - Dashboard</title>
+  <link rel="stylesheet" href="/css/estiloTaskerZooOutput.css">
 </head>
+
 <body class="bg-[#EDEDED] min-h-screen flex flex-col md:flex-row border-t-8 border-b-8 border-[#477963]">
 
-    <%- include('./partials/nav.ejs', { paginaActual: 'dashboard' }) %>
-  
+  <%- include('./partials/nav.ejs', { paginaActual: 'dashboard' }) %>
+
     <!-- Contenido principal -->
     <main class="flex-1 md:ml-56 p-6 space-y-6">
-      
+
       <%- include('./partials/header.ejs', { nombreEmpleado: nombreEmpleado }) %>
-  
-      <!-- Tarjetas con la información principal -->
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        
-        <!-- Fecha y hora actuales -->
-        <div class="bg-white p-4 rounded-lg shadow">
-          <h2 class="text-2xl font-bold mb-2 text-blue-500">Hoy,</h2>
-          <p id="fechaHoraActual" class="text-gray-700">Cargando...</p>
+
+        <!-- Tarjetas con la información principal -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+          <!-- Fecha y hora actuales -->
+          <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center gap-3 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                stroke="#a2b04c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-calendar-clock-icon lucide-calendar-clock">
+                <path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5" />
+                <path d="M16 2v4" />
+                <path d="M8 2v4" />
+                <path d="M3 10h5" />
+                <path d="M17.5 17.5 16 16.3V14" />
+                <circle cx="16" cy="16" r="6" />
+              </svg>
+              <h2 class="text-2xl font-bold text-blue-500">Hoy,</h2>
+            </div>
+            <p id="fechaHoraActual" class="text-gray-700">Cargando...</p>
+          </div>
+
+          <!-- Resumen del clima (OpenWeatherMap y Leafletjs) -->
+          <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center gap-3 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                stroke="#a2b04c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-cloud-sun-rain-icon lucide-cloud-sun-rain">
+                <path d="M12 2v2" />
+                <path d="m4.93 4.93 1.41 1.41" />
+                <path d="M20 12h2" />
+                <path d="m19.07 4.93-1.41 1.41" />
+                <path d="M15.947 12.65a4 4 0 0 0-5.925-4.128" />
+                <path d="M3 20a5 5 0 1 1 8.9-4H13a3 3 0 0 1 2 5.24" />
+                <path d="M11 20v2" />
+                <path d="M7 19v2" />
+              </svg>
+              <h2 class="text-2xl font-bold text-blue-500">Clima Actual</h2>
+            </div>
+            <p class="text-gray-700">Soleado, 21°C</p>
+            <a href="/clima" class="text-blue-600 text-sm mt-2 inline-block">Ver más</a>
+          </div>
+
+          <!-- Eventos del día -->
+          <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center gap-3 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                stroke="#a2b04c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-calendar-arrow-down-icon lucide-calendar-arrow-down">
+                <path d="m14 18 4 4 4-4" />
+                <path d="M16 2v4" />
+                <path d="M18 14v8" />
+                <path d="M21 11.354V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7.343" />
+                <path d="M3 10h18" />
+                <path d="M8 2v4" />
+              </svg>
+              <h2 class="text-2xl font-bold text-blue-500">Eventos del Día</h2>
+            </div>
+            <ul class="list-disc list-inside text-gray-700">
+              <li>Alimentación felinos - 10:00h</li>
+              <li>Charla educativa - 12:00h</li>
+            </ul>
+            <a href="/eventos" class="text-blue-600 text-sm mt-2 inline-block">Ver más</a>
+          </div>
+
+          <!-- Incidencias -->
+          <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center gap-3 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                stroke="#a2b04c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-message-square-warning-icon lucide-message-square-warning">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                <path d="M12 7v2" />
+                <path d="M12 13h.01" />
+              </svg>
+              <h2 class="text-2xl font-bold text-blue-500">Incidencias</h2>
+            </div>
+            <p class="text-red-600">Cierre temporal de zona reptiles</p>
+            <a href="/incidencias" class="text-blue-600 text-sm mt-2 inline-block">Ver más</a>
+          </div>
+
+          <!-- Aforo visitantes -->
+          <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center gap-3 mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                stroke="#a2b04c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-ticket-icon lucide-ticket">
+                <path
+                  d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+                <path d="M13 5v2" />
+                <path d="M13 17v2" />
+                <path d="M13 11v2" />
+              </svg>
+              <h2 class="text-2xl font-bold text-blue-500">Aforo de Hoy</h2>
+            </div>
+            <p class="text-gray-700">456 visitantes registrados</p>
+            <a href="/informes" class="text-blue-600 text-sm mt-2 inline-block">Ver más</a>
+          </div>
+
         </div>
-  
-        <!-- Resumen del clima (OpenWeatherMap y Leafletjs) -->
-        <div class="bg-white p-4 rounded-lg shadow">
-          <h2 class="text-2xl font-bold mb-2 text-blue-500">Clima Actual</h2>
-          <p class="text-gray-700">Soleado, 21°C</p>
-          <a href="/clima" class="text-blue-600 text-sm mt-2 inline-block">Ver más</a>
-        </div>
-  
-        <!-- Eventos del día -->
-        <div class="bg-white p-4 rounded-lg shadow">
-          <h2 class="text-2xl font-bold mb-2 text-blue-500">Eventos del Día</h2>
-          <ul class="list-disc list-inside text-gray-700">
-            <li>Alimentación felinos - 10:00h</li>
-            <li>Charla educativa - 12:00h</li>
-          </ul>
-          <a href="/eventos" class="text-blue-600 text-sm mt-2 inline-block">Ver más</a>
-        </div>
-  
-        <!-- Incidencias -->
-        <div class="bg-white p-4 rounded-lg shadow">
-          <h2 class="text-2xl font-bold mb-2 text-blue-500">Incidencias</h2>
-          <p class="text-red-600">Cierre temporal de zona reptiles</p>
-          <a href="/incidencias" class="text-blue-600 text-sm mt-2 inline-block">Ver más</a>
-        </div>
-  
-        <!-- Aforo visitantes -->
-        <div class="bg-white p-4 rounded-lg shadow">
-          <h2 class="text-2xl font-bold mb-2 text-blue-500">Aforo de Hoy</h2>
-          <p class="text-gray-700">456 visitantes registrados</p>
-          <a href="/informes" class="text-blue-600 text-sm mt-2 inline-block">Ver más</a>
-        </div>
-  
-      </div>
     </main>
-  
+
     <script>
       // Mostrar fecha y hora actual
       function actualizarFechaHora() {
         const ahora = new Date();
-        const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        document.getElementById('fechaHoraActual').textContent = ahora.toLocaleDateString('es-ES', opciones);
+        const opcionesFecha = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        };
+        const opcionesHora = {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        };
+
+        const dia = ahora.toLocaleDateString('es-ES', opcionesFecha);
+        const hora = ahora.toLocaleTimeString('es-ES', opcionesHora);
+
+        const diaCapitalizado = dia.charAt(0).toUpperCase() + dia.slice(1);
+        document.getElementById('fechaHoraActual').textContent =
+          `${diaCapitalizado}, ${hora}`;
       }
       actualizarFechaHora();
       setInterval(actualizarFechaHora, 60000);
     </script>
-  </body>
-  </html>
+</body>
+
+</html>
