@@ -20,32 +20,100 @@
                 <h1 class="text-2xl font-bold text-gray-800 mb-4">Gestión de Animales</h1>
 
                 <!-- Formulario para añadir un animal -->
-                <div class="bg-white p-6 rounded-lg shadow max-w-5xl mx-4">
-                    <h2 class="text-lg font-semibold mb-4">Añadir Nuevo Animal</h2>
-                    <form action="/animales" method="POST"
-                        class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
-                        <input type="text" name="nombre" placeholder="Nombre" required
-                            class="border border-gray-300 rounded px-4 py-2 w-full md:w-auto" />
-                        <input type="text" name="especie" placeholder="Especie" required
-                            class="border border-gray-300 rounded px-4 py-2 w-full md:w-auto" />
-                        <input type="number" name="edad" placeholder="Edad" required
-                            class="border border-gray-300 rounded px-4 py-2 w-full md:w-auto" />
-                        <select name="zona" required class="border border-gray-300 rounded px-4 py-2 w-full md:w-auto">
-                            <option value="">Zona</option>
-                            <option value="Sabana">Sabana</option>
-                            <option value="Reptiles">Reptiles</option>
-                            <option value="Aviario">Aviario</option>
-                        </select>
-                        <button type="submit"
-                            class="bg-[#477963] text-white px-6 py-2 rounded hover:bg-[#365c4c] transition">
-                            Añadir
-                        </button>
+                <div class="bg-white p-6 rounded-lg shadow max-w-5xl mx-auto">
+                    <div class="flex items-center mb-4 gap-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="#c2a255" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-circle-plus-icon lucide-circle-plus">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M8 12h8" />
+                            <path d="M12 8v8" />
+                        </svg>
+                        <h2 class="text-lg font-semibold">Añadir Nuevo Animal</h2>
+                    </div>
+                    <form id="formAñadirAnimal"
+                        class="space-y-4 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Nombre -->
+                        <div>
+                            <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Nombre del animal" required
+                                class="border border-gray-300 rounded px-4 py-2 w-full" />
+                        </div>
+
+                        <!-- Especie -->
+                        <div>
+                            <label for="especie" class="block text-sm font-medium text-gray-700 mb-1">Especie</label>
+                            <input type="text" id="especie" name="especie" placeholder="Especie" required
+                                class="border border-gray-300 rounded px-4 py-2 w-full" />
+                        </div>
+
+                        <!-- Familia Científica -->
+                        <div>
+                            <label for="familiaCientifica"
+                                class="block text-sm font-medium text-gray-700 mb-1">Familia</label>
+                            <select id="familiaCientifica" name="familiaCientifica" required
+                                class="border border-gray-300 rounded px-4 py-2 w-full">
+                                <option value="">Seleccione familia</option>
+                                <% familias.forEach(familia=> { %>
+                                    <option value="<%= familia.nombreCientifico %>">
+                                        <%= familia.nombreComun %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+
+                        <!-- Edad -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Edad</label>
+                            <div class="flex flex-col space-y-2">
+                                <input type="number" id="edad" name="edad" placeholder="Edad" required
+                                    class="border border-gray-300 rounded px-4 py-2 w-full" />
+                                <select id="unidadEdad" class="border border-gray-300 rounded px-4 py-2 w-full">
+                                    <option value="dias">días</option>
+                                    <option value="semanas">semanas</option>
+                                    <option value="meses">meses</option>
+                                    <option value="anios">años</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Sexo -->
+                        <div>
+                            <label for="sexo" class="block text-sm font-medium text-gray-700 mb-1">Sexo</label>
+                            <select id="sexo" name="sexo" required
+                                class="border border-gray-300 rounded px-4 py-2 w-full">
+                                <option value="">Seleccione sexo</option>
+                                <option value="M">Macho</option>
+                                <option value="F">Hembra</option>
+                                <option value="Desconocido">Desconocido</option>
+                            </select>
+                        </div>
+
+                        <!-- Zona -->
+                        <div>
+                            <label for="zona" class="block text-sm font-medium text-gray-700 mb-1">Zona</label>
+                            <select id="zona" name="zona" required
+                                class="border border-gray-300 rounded px-4 py-2 w-full">
+                                <option value="">Seleccione zona</option>
+                                <option value="Sabana">Sabana</option>
+                                <option value="Reptiles">Reptiles</option>
+                                <option value="Aviario">Aviario</option>
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-2 lg:col-span-3 pt-2">
+                            <button type="submit"
+                                class="bg-[#C2A255] text-white px-6 py-2 rounded hover:bg-[#a3843a] transition w-full md:w-auto">
+                                Añadir Animal
+                            </button>
+                        </div>
                     </form>
                 </div>
 
                 <!-- mostrar los animales aquí y poner filtros -->
 
         </main>
+        <script src="/js/codigoAnimales.js"></script>
 </body>
 
 </html>

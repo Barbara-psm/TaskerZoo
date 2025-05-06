@@ -1,0 +1,104 @@
+[
+    {
+        "nombreComun": "Felinos",
+        "nombreCientifico": "Felidae",
+        "descripcion": "Familia de mamíferos carnívoros como leones, tigres, leopardos y gatos.",
+        "taxonomia": "Animalia > Chordata > Mammalia > Carnivora > Felidae"
+    },
+    {
+        "nombreComun": "Cánidos",
+        "nombreCientifico": "Canidae",
+        "descripcion": "Incluye lobos, zorros, chacales y perros.",
+        "taxonomia": "Animalia > Chordata > Mammalia > Carnivora > Canidae"
+    },
+    {
+        "nombreComun": "Elefantes",
+        "nombreCientifico": "Elephantidae",
+        "descripcion": "Los elefantes africanos y asiáticos pertenecen a esta familia.",
+        "taxonomia": "Animalia > Chordata > Mammalia > Proboscidea > Elephantidae"
+    },
+    {
+        "nombreComun": "Reptiles escamosos",
+        "nombreCientifico": "Squamata",
+        "descripcion": "Incluye lagartos, serpientes e iguanas.",
+        "taxonomia": "Animalia > Chordata > Reptilia > Squamata"
+    },
+    {
+        "nombreComun": "Aves rapaces",
+        "nombreCientifico": "Accipitridae",
+        "descripcion": "Águilas, halcones y buitres.",
+        "taxonomia": "Animalia > Chordata > Aves > Accipitriformes > Accipitridae"
+    },
+    {
+        "nombreComun": "Primates",
+        "nombreCientifico": "Hominidae",
+        "descripcion": "Gorilas, chimpancés, orangutanes y humanos.",
+        "taxonomia": "Animalia > Chordata > Mammalia > Primates > Hominidae"
+    },
+    {
+        "nombreComun": "Osos",
+        "nombreCientifico": "Ursidae",
+        "descripcion": "Incluye osos polares, osos pardos, osos panda y otras especies de osos.",
+        "taxonomia": "Animalia > Chordata > Mammalia > Carnivora > Ursidae"
+    },
+    {
+        "nombreComun": "Cérvidos",
+        "nombreCientifico": "Cervidae",
+        "descripcion": "Familia de mamíferos rumiantes con astas como ciervos, alces y venados.",
+        "taxonomia": "Animalia > Chordata > Mammalia > Artiodactyla > Cervidae"
+    },
+    {
+        "nombreComun": "Pingüinos",
+        "nombreCientifico": "Spheniscidae",
+        "descripcion": "Aves no voladoras adaptadas a la vida acuática, como el pingüino emperador y el pingüino de Magallanes.",
+        "taxonomia": "Animalia > Chordata > Aves > Sphenisciformes > Spheniscidae"
+    },
+    {
+        "nombreComun": "Cocodrilos",
+        "nombreCientifico": "Crocodylidae",
+        "descripcion": "Reptiles grandes semiacuáticos como el cocodrilo del Nilo y el cocodrilo marino.",
+        "taxonomia": "Animalia > Chordata > Reptilia > Crocodylia > Crocodylidae"
+    },
+    {
+        "nombreComun": "Anfibios ranas verdaderas",
+        "nombreCientifico": "Ranidae",
+        "descripcion": "Familia de ranas ampliamente distribuida, conocidas como ranas verdaderas.",
+        "taxonomia": "Animalia > Chordata > Amphibia > Anura > Ranidae"
+    },
+    {
+        "nombreComun": "Camélidos",
+        "nombreCientifico": "Camelidae",
+        "descripcion": "Incluye llamas, alpacas, camellos y dromedarios.",
+        "taxonomia": "Animalia > Chordata > Mammalia > Artiodactyla > Camelidae"
+    },
+    {
+        "nombreComun": "Marsupiales",
+        "nombreCientifico": "Macropodidae",
+        "descripcion": "Canguros, ualabíes y otras especies con bolsa marsupial.",
+        "taxonomia": "Animalia > Chordata > Mammalia > Diprotodontia > Macropodidae"
+    },
+    {
+        "nombreComun": "Cetáceos",
+        "nombreCientifico": "Delphinidae",
+        "descripcion": "Delfines y orcas, mamíferos marinos muy inteligentes.",
+        "taxonomia": "Animalia > Chordata > Mammalia > Cetartiodactyla > Cetacea > Delphinidae"
+    },
+    {
+        "nombreComun": "Psitácidos",
+        "nombreCientifico": "Psittacidae",
+        "descripcion": "Loros, guacamayos y periquitos.",
+        "taxonomia": "Animalia > Chordata > Aves > Psittaciformes > Psittacidae"
+    },
+    {
+        "nombreComun": "Tortugas",
+        "nombreCientifico": "Testudinidae",
+        "descripcion": "Tortugas terrestres y algunas acuáticas, como la tortuga mediterránea.",
+        "taxonomia": "Animalia > Chordata > Reptilia > Testudines > Testudinidae"
+    },
+    {
+        "nombreComun": "Serpientes constrictoras",
+        "nombreCientifico": "Boidae",
+        "descripcion": "Incluye boas y anacondas, serpientes no venenosas que matan por constricción.",
+        "taxonomia": "Animalia > Chordata > Reptilia > Squamata > Boidae"
+    }
+]

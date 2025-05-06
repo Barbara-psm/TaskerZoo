@@ -4,9 +4,11 @@ const session = require('express-session');
 const app = express();
 const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs');
 const methodOverride = require('method-override');
 const Zoo = require('./models/Zoos');
 const Empleado = require('./models/Empleados');
+const Animal = require('./models/Animales');
 const PORT = process.env.PORT || 3000;
 
 // Registrar ejs
@@ -145,9 +147,35 @@ app.get('/verificarSesion', (req, res) => {
 // Gestión de animales
 app.get('/animales', async (req, res) => {
     try {
-        res.render('animales.ejs', { nombreEmpleado: req.session.usuario?.nombre || 'Empleado', paginaActual: 'animales' });
+        const familiasPath = path.join(__dirname, 'public', 'data', 'familiasCientificas.json');
+        const data = fs.readFileSync(familiasPath, 'utf-8');
+        const familias = JSON.parse(data); // Array de objetos con nombreComun y nombreCientifico
+
+        res.render('animales.ejs', { nombreEmpleado: req.session.usuario?.nombre || 'Empleado', paginaActual: 'animales', familias });
     } catch (error) {
         console.log('Error al acceder a la gestión de los animales', error);
+    }
+});
+
+// Añadir un animal
+app.post('/animales', async (req, res) => {
+    const { nombre, especie, edad, sexo, zona, familiaCientifica } = req.body;
+
+    try {
+        const nuevoAnimal = new Animal({
+            nombre,
+            especie,
+            edad,
+            sexo,
+            zona,
+            familiaCientifica
+        });
+
+        await nuevoAnimal.save();
+        res.redirect('/animales');
+    } catch (error) {
+        console.error('Error al crear el animal:', error);
+        res.status(500).send('Error al crear el animal');
     }
 });
 
