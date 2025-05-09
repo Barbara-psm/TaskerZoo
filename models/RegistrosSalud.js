@@ -7,7 +7,6 @@ const registroSaludSchema = new Schema({
   tipoRevision: String,
   observaciones: String,
   veterinario: { type: mongoose.Schema.Types.ObjectId, ref: 'Empleado' },
-  // zooId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zoo', required: true },
 }, { timestamps: true });
 
 const RegistroSalud = mongoose.model('RegistroSalud', registroSaludSchema);

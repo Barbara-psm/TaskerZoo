@@ -1,0 +1,63 @@
+[
+    {
+        "categoria": "Alimentación",
+        "items": [
+            "Carne fresca",
+            "Pescado",
+            "Frutas",
+            "Verduras",
+            "Heno",
+            "Pienso seco",
+            "Insectos vivos (grillos, gusanos)",
+            "Bambú",
+            "Néctar",
+            "Suplementos vitamínicos"
+        ]
+    },
+    {
+        "categoria": "Salud",
+        "items": [
+            "Antibióticos",
+            "Analgésicos",
+            "Anestésicos",
+            "Jeringas",
+            "Vendas",
+            "Desinfectantes",
+            "Guantes quirúrgicos",
+            "Equipos de diagnóstico"
+        ]
+    },
+    {
+        "categoria": "Limpieza",
+        "items": [
+            "Detergentes",
+            "Desinfectantes",
+            "Escobas",
+            "Fregonas",
+            "Bolsas de basura",
+            "Guantes de limpieza"
+        ]
+    },
+    {
+        "categoria": "Mantenimiento",
+        "items": [
+            "Herramientas (martillos, destornilladores)",
+            "Materiales de construcción",
+            "Pintura",
+            "Bombillas",
+            "Cables eléctricos",
+            "Tubos PVC"
+        ]
+    },
+    {
+        "categoria": "Enriquecimiento",
+        "items": [
+            "Juguetes para animales",
+            "Ramas y troncos",
+            "Espejos",
+            "Pelotas",
+            "Cuerdas",
+            "Dispensadores de comida interactivos"
+        ]
+    }
+]

@@ -7,7 +7,6 @@ const eventoSchema = new Schema({
   fecha: Date,
   hora: String,
   zonaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zona' },
-  // zooId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zoo', required: true },
 }, { timestamps: true });
 
 const Evento = mongoose.model('Evento', eventoSchema);

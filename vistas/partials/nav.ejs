@@ -1,6 +1,10 @@
-<!-- Botón tipo hamburguesa solo visible en móviles -->
-<button id="menuBtn" class="md:hidden fixed top-4 left-4 z-50 text-white bg-blue-500 hover:bg-blue-600 px-3 py-2 rounded">
-  ☰
+<!-- Botón tipo hamburguesa para abrir el aside -->
+<button id="menuBtn" class="nav-menu-btn"> ☰
+</button>
+<!-- Botón para cerrar el nav cuando está abierto -->
+<button id="closeBtn"
+  class="hidden absolute top-4 left-[185px] text-black bg-brand-grey-light hover:bg-gray-300 px-2 py-1 rounded-full text-sm z-50">
+  ✕
 </button>
 
 <!-- Sidebar -->
@@ -11,8 +15,7 @@
   </div>
   <ul class="mt-4 space-y-3">
     <li>
-      <a href="/dashboard" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'dashboard' ? ' bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
+      <a href="/dashboard" class="nav-item <%= paginaActual === 'dashboard' ? 'active' : '' %>">
         <span>Inicio</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -24,8 +27,7 @@
       </a>
     </li>
     <li>
-      <a href="/animales" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'animales' ? ' bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
+      <a href="/animales" class="nav-item <%= paginaActual === 'animales' ? 'active' : '' %>">
         <span>Gestión de Animales</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -38,8 +40,7 @@
       </a>
     </li>
     <li>
-      <a href="/salud" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'salud' ? 'bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
+      <a href="/salud" class="nav-item <%= paginaActual === 'salud' ? 'active' : '' %>">
         <span>Salud</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -51,8 +52,7 @@
       </a>
     </li>
     <li>
-      <a href="/suministros" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'suministros' ? 'bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
+      <a href="/suministros" class="nav-item <%= paginaActual === 'suministros' ? 'active' : '' %>">
         <span>Suministros</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -64,8 +64,7 @@
       </a>
     </li>
     <li>
-      <a href="/zonas" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'zonas' ? 'bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
+      <a href="/zonas" class="nav-item <%= paginaActual === 'zonas' ? 'active' : '' %>">
         <span>Zonas</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -78,9 +77,8 @@
       </a>
     </li>
     <li>
-      <a href="/area-personal" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'area-personal' ? 'bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
-        <span>Área Personal</span>
+      <a href="/personal" class="nav-item <%= paginaActual === 'personal' ? 'active' : '' %>">
+        <span>Personal</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           class="lucide lucide-user-icon lucide-user">
@@ -89,21 +87,8 @@
         </svg>
       </a>
     </li>
-    <!-- <li>
-      <a href="/chat" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'chat' ? 'bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
-        <span>Chat</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-messages-square-icon lucide-messages-square">
-          <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z" />
-          <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
-        </svg>
-      </a>
-    </li> -->
     <li>
-      <a href="/eventos" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'eventos' ? 'bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
+      <a href="/eventos" class="nav-item <%= paginaActual === 'eventos' ? 'active' : '' %>">
         <span>Eventos</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -117,8 +102,7 @@
       </a>
     </li>
     <li>
-      <a href="/incidencias" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'incidencias' ? 'bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
+      <a href="/incidencias" class="nav-item <%= paginaActual === 'incidencias' ? 'active' : '' %>">
         <span>Incidencias</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -129,24 +113,8 @@
         </svg>
       </a>
     </li>
-    <!-- <li>
-      <a href="/informes" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'informes' ? 'bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
-        <span>Informes</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-file-chart-column-increasing-icon lucide-file-chart-column-increasing">
-          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-          <path d="M8 18v-2" />
-          <path d="M12 18v-4" />
-          <path d="M16 18v-6" />
-        </svg>
-      </a>
-    </li> -->
     <li>
-      <a href="/ajustes" class="flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full
-        <%= paginaActual === 'ajustes' ? 'bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full' : '' %>">
+      <a href="/ajustes" class="nav-item <%= paginaActual === 'ajustes' ? 'active' : '' %>">
         <span>Ajustes</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -160,17 +128,40 @@
   </ul>
 </aside>
 
-<!-- Botón para ir a la documentación flotante abajo a la derecha -->
-<a href="/ayuda"
-  class="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg z-50">
-  ?
-</a>
+<!-- Botón flotante para hacer scroll hacia la parte superior abajo a la derecha -->
+<button id="scrollTopBtn" class="scroll-top-btn">
+  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffff"
+    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+    class="lucide lucide-chevron-up-icon lucide-chevron-up">
+    <path d="m18 15-6-6-6 6" />
+  </svg>
+</button>
+
+<script>
+  const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+</script>
 
 <script>
   const menuBtn = document.getElementById('menuBtn');
   const sidebar = document.getElementById('sidebar');
+  const closeBtn = document.getElementById('closeBtn');
 
   menuBtn.addEventListener('click', () => {
     sidebar.classList.toggle('-translate-x-full');
+    closeBtn.classList.remove('hidden');
+    menuBtn.classList.add('hidden');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    sidebar.classList.add('-translate-x-full');
+    menuBtn.classList.remove('hidden');
+    closeBtn.classList.add('hidden');
   });
 </script>

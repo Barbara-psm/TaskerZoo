@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TaskerZoo - Dashboard</title>
+  <title><%= title %></title>
   <link rel="stylesheet" href="/css/estiloTaskerZooOutput.css">
+  <link rel="icon" href="/favicons/icon-310.png" type="image/x-icon">
 </head>
 
 <body class="bg-[#EDEDED] min-h-screen flex flex-col md:flex-row border-t-8 border-b-8 border-[#477963]">
@@ -38,7 +39,7 @@
             <p id="fechaHoraActual" class="text-gray-700">Cargando...</p>
           </div>
 
-          <!-- Resumen del clima (OpenWeatherMap y Leafletjs) -->
+          <!-- Resumen del clima (OpenWeatherMap) -->
           <div class="bg-white p-4 rounded-lg shadow">
             <div class="flex items-center gap-3 mb-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
@@ -54,9 +55,12 @@
                 <path d="M7 19v2" />
               </svg>
               <h2 class="text-2xl font-bold text-blue-500">Clima Actual</h2>
+              <div id="weather-content" class="text-gray-700">
+                <div class="flex items-center justify-center gap-2">
+                  <div class="animate-pulse">Cargando datos del clima...</div>
+                </div>
+              </div>
             </div>
-            <p class="text-gray-700">Soleado, 21°C</p>
-            <a href="/clima" class="text-blue-600 text-sm mt-2 inline-block">Ver más</a>
           </div>
 
           <!-- Eventos del día -->
@@ -143,6 +147,44 @@
       }
       actualizarFechaHora();
       setInterval(actualizarFechaHora, 60000);
+    </script>
+
+    <script>
+      // Mostrar el clima actual de la zona en la que se encuentra el zoo
+      async function cargarClima() {
+        const weatherDiv = document.getElementById('weather-content');
+        try {
+          const res = await fetch('/api/weather');
+          const data = await res.json();
+          if (res.ok) {
+            weatherDiv.innerHTML = `
+            <div class="flex items-center justify-center gap-2">
+                <img src="https://openweathermap.org/img/wn/${data.icono}@2x.png" 
+                     alt="${data.descripcion}" 
+                     class="w-12 h-12">
+                <span class="text-xl font-semibold">${Math.round(data.temperatura)}°C</span>
+            </div>
+            <div class="mt-2 text-center">
+                <span class="capitalize">${data.descripcion}</span><br>
+                <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
+                    <div class="text-gray-600">Humedad: ${data.humedad}%</div>
+                    <div class="text-gray-600">Viento: ${data.viento} m/s</div>
+                </div>
+            </div>
+          `;
+          } else {
+            weatherDiv.innerHTML = '<div class="text-red-500">No se pudo obtener el clima</div>';
+          }
+        } catch (e) {
+          weatherDiv.innerHTML = '<div class="text-red-500">Error al cargar el clima</div>';
+        }
+      }
+
+      // Cargar el clima al iniciar la página
+      document.addEventListener('DOMContentLoaded', cargarClima);
+
+      // Actualizar el clima cada 30 minutos
+      setInterval(cargarClima, 1800000);
     </script>
 </body>
 

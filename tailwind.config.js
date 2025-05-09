@@ -10,7 +10,13 @@ module.exports = {
     "./**/*.ejs"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'brand-green-light': '#A2B04C',
+        'brand-brown-light': '#C2A255',
+        'brand-grey-light': '#EDEDED',
+      }
+    },
   },
   plugins: [],
 }

@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    /* Clase para los elementos del nav */
+    .nav-item {
+        @apply flex justify-between items-center px-4 py-2 hover:bg-[#DFDFDF] hover:text-black ml-2 hover:rounded-tl-full hover:rounded-bl-full;
+    }
+    
+    /* Clase para el estado activo de los elementos del nav */
+    .nav-item.active {
+        @apply bg-[#EDEDED] text-black rounded-tl-full rounded-bl-full hover:bg-[#DFDFDF];
+    }
+    
+    /* Clase para el botón de menú */
+    .nav-menu-btn {
+        @apply md:hidden fixed top-4 left-4 z-50 text-white bg-blue-500 hover:bg-blue-600 px-3 py-2 rounded;
+    }
+    
+    /* Clase para el botón de cerrar el menú */
+    /* .nav-close-btn {
+        @apply hidden absolute top-4 left-[185px] text-black bg-brand-grey-light hover:bg-gray-300 px-2 py-1 rounded-full text-sm z-50;
+    }
+     */
+    /* Clase para el botón de scroll hacia arriba */
+    .scroll-top-btn {
+        @apply fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg z-50;
+    }
+}
