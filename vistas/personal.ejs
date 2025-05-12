@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/estiloTaskerZooOutput.css" />
+</head>
+
+<body class="bg-[#EDEDED] min-h-screen flex flex-col md:flex-row border-t-8 border-b-8 border-[#477963]">
+
+    <%- include('./partials/nav.ejs', { paginaActual: 'personal' }) %>
+
+        <!-- Contenido principal -->
+        <main class="flex-1 md:ml-56 p-4 md:p-6 space-y-6 overflow-x-hidden">
+
+            <%- include('./partials/header.ejs', { nombreEmpleado: nombreEmpleado }) %>
+
+                <!-- Sección de Empleados por Rol -->
+                <div class="space-y-8">
+                    <!-- Administradores -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="bg-[#477963] px-6 py-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" class="mr-2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <h2 class="text-xl font-semibold text-white">Administradores</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+                            <% empleados.filter(e=> e.rol === 'admin').forEach(empleado => { %>
+                                <div class="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-center space-x-4">
+                                        <div
+                                            class="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center text-xl">
+                                            <%= empleado.nombre.charAt(0).toUpperCase() %>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">
+                                                <%= empleado.nombre %>
+                                            </h3>
+                                            <p class="text-sm text-gray-600">
+                                                <%= empleado.email %>
+                                            </p>
+                                            <span
+                                                class="inline-block mt-1 px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                                                <%= empleado.rol %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                        </div>
+                    </div>
+
+                    <!-- Veterinarios -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="bg-[#5D9C59] px-6 py-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" class="mr-2">
+                                <path
+                                    d="M14 11c.29 0 .58 0 .87-.04A5 5 0 0 0 13 7V5.5a.5.5 0 0 1 1 0v.68a6.83 6.83 0 0 1 3 1.18">
+                                </path>
+                                <path d="M17 11h.01"></path>
+                                <path d="M12 11h.01"></path>
+                                <path d="M10 5.5a4.5 4.5 0 1 0-4.5 4.5"></path>
+                                <path d="M5.5 16a4.5 4.5 0 1 0 4.5-4.5"></path>
+                            </svg>
+                            <h2 class="text-xl font-semibold text-white">Veterinarios</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+                            <% empleados.filter(e=> e.rol === 'veterinario').forEach(empleado => { %>
+                                <div class="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-center space-x-4">
+                                        <div
+                                            class="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center text-xl">
+                                            <%= empleado.nombre.charAt(0).toUpperCase() %>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">
+                                                <%= empleado.nombre %>
+                                            </h3>
+                                            <p class="text-sm text-gray-600">
+                                                <%= empleado.email %>
+                                            </p>
+                                            <span
+                                                class="inline-block mt-1 px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
+                                                <%= empleado.rol %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                        </div>
+                    </div>
+
+                    <!-- Cuidadores -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="bg-[#C07F00] px-6 py-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" class="mr-2">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <h2 class="text-xl font-semibold text-white">Cuidadores</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+                            <% empleados.filter(e=> e.rol === 'cuidador').forEach(empleado => { %>
+                                <div class="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-center space-x-4">
+                                        <div
+                                            class="bg-gray-200 rounded-full w-12 h-12 flex items-center justify-center text-xl">
+                                            <%= empleado.nombre.charAt(0).toUpperCase() %>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">
+                                                <%= empleado.nombre %>
+                                            </h3>
+                                            <p class="text-sm text-gray-600">
+                                                <%= empleado.email %>
+                                            </p>
+                                            <span
+                                                class="inline-block mt-1 px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">
+                                                <%= empleado.rol %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                        </div>
+                    </div>
+
+                    <!-- Monitores y Taquilla -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Monitores -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden">
+                            <div class="bg-[#7D7C7C] px-6 py-3 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" class="mr-2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                <h2 class="text-xl font-semibold text-white">Monitores</h2>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <% empleados.filter(e=> e.rol === 'monitor').forEach(empleado => { %>
+                                    <div
+                                        class="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                                        <div class="flex items-center space-x-3">
+                                            <div
+                                                class="bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center">
+                                                <%= empleado.nombre.charAt(0).toUpperCase() %>
+                                            </div>
+                                            <span class="font-medium">
+                                                <%= empleado.nombre %>
+                                            </span>
+                                        </div>
+                                        <span class="text-sm text-gray-500">
+                                            <%= empleado.email %>
+                                        </span>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+
+                        <!-- Personal de Taquilla -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden">
+                            <div class="bg-[#9376E0] px-6 py-3 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" class="mr-2">
+                                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                    <path d="M2 10h20M7 15h1m4 0h1m4 0h1"></path>
+                                </svg>
+                                <h2 class="text-xl font-semibold text-white">Personal de Taquilla</h2>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <% empleados.filter(e=> e.rol === 'taquilla').forEach(empleado => { %>
+                                    <div
+                                        class="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                                        <div class="flex items-center space-x-3">
+                                            <div
+                                                class="bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center">
+                                                <%= empleado.nombre.charAt(0).toUpperCase() %>
+                                            </div>
+                                            <span class="font-medium">
+                                                <%= empleado.nombre %>
+                                            </span>
+                                        </div>
+                                        <span class="text-sm text-gray-500">
+                                            <%= empleado.email %>
+                                        </span>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </main>
+        <script src="/js/codigoAnimales.js"></script>
+</body>
+
+</html>

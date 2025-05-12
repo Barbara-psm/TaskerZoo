@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const rol = formSignUp.newRol.value.trim();
         const email = formSignUp.newEmail.value.trim();
         const contraseña = formSignUp.newPassword.value.trim();
-        const idZooName = localStorage.getItem('nombreZoo');
 
         if (!nombre || !email || !contraseña) {
             alert('Por favor, completa todos los campos.');
@@ -85,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nombre, rol, email, contraseña, idZooName })
+                body: JSON.stringify({ nombre, rol, email, contraseña })
             });
 
             const resultado = await respuesta.json();
@@ -124,7 +123,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, contraseña })
+                body: JSON.stringify({ email, contraseña }),
+                credentials: 'include'
             });
 
             const resultado = await respuesta.json();

@@ -6,7 +6,7 @@ const eventoSchema = new Schema({
   descripcion: String,
   fecha: Date,
   hora: String,
-  zonaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Zona' },
+  zona: String,
 }, { timestamps: true });
 
 const Evento = mongoose.model('Evento', eventoSchema);

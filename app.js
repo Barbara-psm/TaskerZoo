@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const app = express();
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const path = require('path');
 const fs = require('fs');
 const methodOverride = require('method-override');
@@ -10,6 +11,8 @@ const axios = require('axios');
 const Empleado = require('./models/Empleados');
 const Animal = require('./models/Animales');
 const Suministro = require('./models/Suministros');
+const Zona = require('./models/Zonas');
+const Evento = require('./models/Eventos');
 const PORT = process.env.PORT || 3000;
 
 // Registrar ejs
@@ -20,6 +23,9 @@ app.set('views', 'vistas');
 
 // Establecer carpeta 'public' para estilos etc...
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Para poder usar Flatpickr
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
 // Para datos JSON
 app.use(express.json());
@@ -58,7 +64,7 @@ const LON = zooConfig.lon;
 // --- RUTAS ---
 // Inicio
 app.get('/', (req, res) => {
-    res.render('index.ejs' , {
+    res.render('index.ejs', {
         title: 'TaskerZoo - Inicio'
     });
 });
@@ -98,20 +104,34 @@ app.post('/loginEmpleado', async (req, res) => {
     const { email, contraseña } = req.body;
 
     try {
-        // Buscar empleado con ese correo y contraseña
-        const empleado = await Empleado.findOne({ email, contraseña });
+        // 1. Buscar empleado por email
+        const empleado = await Empleado.findOne({ email });
 
         if (!empleado) {
             return res.status(401).json({ message: 'Credenciales incorrectas.' });
         }
 
+        // 2. Comparar contraseñas usando el método del modelo
+        const contraseñaValida = await empleado.compararContraseña(contraseña);
+
+        if (!contraseñaValida) {
+            return res.status(401).json({ message: 'Credenciales incorrectas.' });
+        }
+
+        // 3. Crear sesión
         req.session.usuario = {
             id: empleado._id,
-            nombre: empleado.nombre
+            nombre: empleado.nombre,
+            rol: empleado.rol // Añadir el rol a la sesión
         };
 
-        // Si lo encuentra, enviar respuesta exitosa
-        res.status(200).json({ message: 'Inicio de sesión exitoso.' });
+        res.status(200).json({
+            message: 'Inicio de sesión exitoso.',
+            usuario: {
+                nombre: empleado.nombre,
+                rol: empleado.rol
+            }
+        });
     } catch (error) {
         console.error('Error en /loginEmpleado:', error);
         res.status(500).json({ message: 'Error interno del servidor.' });
@@ -220,7 +240,7 @@ app.get('/suministros', async (req, res) => {
 
         res.render('suministros.ejs', {
             title: 'TaskerZoo - Suministros',
-            nombreZoo: zooConfig.nombre ,
+            nombreZoo: zooConfig.nombre,
             nombreEmpleado: req.session.usuario?.nombre || 'Empleado',
             paginaActual: 'suministros',
             categoriasSuministros,
@@ -253,3 +273,226 @@ app.post('/suministros', async (req, res) => {
         res.status(500).send('Error al añadir suministro');
     }
 });
+
+// ZONAS
+app.get('/zonas', async (req, res) => {
+    try {
+        // Cargar el archivo JSON correctamente
+        const zonasJSON = require('./public/data/zonas.json');
+
+        // Obtener las zonas de la base de datos
+        const zonas = await Zona.find().sort({ createdAt: -1 });
+
+        res.render('zonas.ejs', {
+            title: 'TaskerZoo - Zonas',
+            nombreEmpleado: req.session.usuario?.nombre || 'Empleado',
+            paginaActual: 'zonas',
+            zonas,
+            zonasDisponibles: zonasJSON.zonas, // Pasar el array de zonas
+            nombreZoo: zooConfig.nombre
+        });
+    } catch (error) {
+        console.log('Error al acceder a la gestión de las zonas', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
+// Añadir una zona
+app.post('/api/zonas', async (req, res) => {
+    try {
+        const { nombre } = req.body;
+
+        // Verificar si la zona ya existe
+        const zonaExistente = await Zona.findOne({ nombre });
+        if (zonaExistente) {
+            return res.status(400).json({ message: 'Esta zona ya está registrada' });
+        }
+
+        const nuevaZona = new Zona({
+            nombre,
+            estado: 'Abierta'
+        });
+
+        await nuevaZona.save();
+        res.status(201).json(nuevaZona);
+    } catch (error) {
+        console.error('Error al añadir zona:', error);
+        res.status(500).json({ error: 'Error al añadir zona' });
+    }
+});
+
+// Cambiar el estado de una zona
+app.put('/api/zonas/:id/estado', async (req, res) => {
+    try {
+        const { estado } = req.body;
+        const zona = await Zona.findByIdAndUpdate(
+            req.params.id,
+            { estado },
+            { new: true }
+        );
+
+        if (!zona) {
+            return res.status(404).json({ message: 'Zona no encontrada' });
+        }
+
+        res.json(zona);
+    } catch (error) {
+        console.error('Error al cambiar estado:', error);
+        res.status(500).json({ error: 'Error al cambiar estado' });
+    }
+});
+
+// Eliminar una zona
+app.delete('/api/zonas/:id', async (req, res) => {
+    try {
+        const zona = await Zona.findByIdAndDelete(req.params.id);
+
+        if (!zona) {
+            return res.status(404).json({ message: 'Zona no encontrada' });
+        }
+
+        res.json({ message: 'Zona eliminada correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar zona:', error);
+        res.status(500).json({ error: 'Error al eliminar zona' });
+    }
+});
+
+// PERSONAL DEL ZOO
+app.get('/personal', async (req, res) => {
+    try {
+
+        // Obtener empleados existentes de la base de datos
+        const empleados = await Empleado.find().sort({ createdAt: -1 });
+
+        res.render('personal.ejs', {
+            title: 'TaskerZoo - Personal',
+            nombreZoo: zooConfig.nombre,
+            nombreEmpleado: req.session.usuario?.nombre || 'Empleado',
+            paginaActual: 'personal',
+            empleados
+        });
+    } catch (error) {
+        console.log('Error al acceder a la vista de personal', error);
+        res.status(500).render('error', { mensaje: 'Error al cargar la página de personal' });
+    }
+});
+
+
+// EVENTOS
+app.get('/eventos', async (req, res) => {
+    try {
+        // Obtener todos los eventos ordenados por fecha (más recientes primero)
+        const eventos = await Evento.find().sort({ fecha: 1 });
+        // Obtener las zonas para el select del formulario
+        const zonas = await Zona.find();
+
+        res.render('eventos.ejs', {
+            title: 'TaskerZoo - Eventos',
+            nombreEmpleado: req.session.usuario?.nombre || 'Empleado',
+            paginaActual: 'eventos',
+            eventos,
+            zonas,
+            nombreZoo: zooConfig.nombre
+        });
+    } catch (error) {
+        console.log('Error al acceder a la gestión de eventos', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
+// Crear eventos
+app.post('/eventos', async (req, res) => {
+    try {
+        const { nombre, descripcion, fecha, hora, zona } = req.body;
+
+        const nuevoEvento = new Evento({
+            nombre,
+            descripcion,
+            fecha,
+            hora,
+            zona
+        });
+
+        await nuevoEvento.save();
+        res.status(201).json(nuevoEvento);
+    } catch (error) {
+        console.error('Error al crear evento:', error);
+        res.status(500).json({ error: 'Error al crear evento' });
+    }
+});
+
+// Eliminar eventos
+app.delete('/eventos/:id', async (req, res) => {
+    try {
+        const eventoEliminado = await Evento.findByIdAndDelete(req.params.id);
+
+        if (!eventoEliminado) {
+            return res.status(404).json({ message: 'Evento no encontrado' });
+        }
+
+        res.json({ message: 'Evento eliminado correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar evento:', error);
+        res.status(500).json({ error: 'Error al eliminar evento' });
+    }
+});
+
+// INCIDENCIAS
+
+// AJUSTES
+app.get('/ajustes', async (req, res) => {
+    try {
+        // Obtener los datos completos del empleado
+        const empleado = await Empleado.findById(req.session.usuario?.id);
+
+        res.render('ajustes.ejs', {
+            title: 'TaskerZoo - Ajustes',
+            nombreZoo: zooConfig.nombre,
+            nombreEmpleado: req.session.usuario?.nombre || 'Empleado',
+            rol: empleado?.rol || 'No definido',
+            email: empleado?.email || '',
+            paginaActual: 'ajustes'
+        });
+    } catch (error) {
+        console.log('Error al acceder a los ajustes', error);
+        res.status(500).render('error', { mensaje: 'Error al cargar la página de ajustes' });
+    }
+});
+
+// Cambiar contraseña
+app.post('/cambiar-contraseña', async (req, res) => {
+    try {
+        const { contraseñaActual, nuevaContraseña } = req.body;
+        const empleado = await Empleado.findById(req.session.usuario.id);
+
+        // Verificar contraseña actual
+        const contraseñaValida = await bcrypt.compare(contraseñaActual, empleado.contraseña);
+        if (!contraseñaValida) {
+            return res.status(400).json({ error: 'Contraseña actual incorrecta' });
+        }
+
+        // Actualizar contraseña
+        empleado.contraseña = nuevaContraseña;
+        await empleado.save();
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error al cambiar contraseña:', error);
+        res.status(500).json({ error: 'Error al cambiar contraseña' });
+    }
+});
+
+// Eliminar cuenta
+app.delete('/eliminar-cuenta', async (req, res) => {
+    try {
+        await Empleado.findByIdAndDelete(req.session.usuario.id);
+        req.session.destroy();
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error al eliminar cuenta:', error);
+        res.status(500).json({ error: 'Error al eliminar cuenta' });
+    }
+});
+
+
