@@ -1,1 +1,6 @@
+.vscode/
+.VSCodeCounter/
+
 node_modules/
+
+.env
