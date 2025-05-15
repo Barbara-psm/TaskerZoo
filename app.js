@@ -13,26 +13,24 @@ const Animal = require('./models/Animales');
 const Suministro = require('./models/Suministros');
 const Zona = require('./models/Zonas');
 const Evento = require('./models/Eventos');
+const RegistroSalud = require('./models/RegistrosSalud');
+const Incidencia = require('./models/Incidencias');
 const PORT = process.env.PORT || 3000;
 
-// Registrar ejs
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); // Registrar ejs
 
-// Especificar la carpeta que contiene las vistas
-app.set('views', 'vistas');
+app.set('views', 'vistas'); // Especificar la carpeta que contiene las vistas
 
-// Establecer carpeta 'public' para estilos etc...
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'))); // Establecer carpeta 'public' para estilos etc...
 
-// Para poder usar Flatpickr
-app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules'))); // Para poder usar Flatpickr
 
-// Para datos JSON
-app.use(express.json());
-// Middleware para parsear el cuerpo de las solicitudes
-app.use(express.urlencoded({ extended: true }));
-// Para métodos PUT/DELETE
-app.use(methodOverride('_method'));
+app.use(express.json()); // Para datos JSON
+
+app.use(express.urlencoded({ extended: true })); // Middleware para parsear el cuerpo de las solicitudes
+
+app.use(methodOverride('_method')); // Para métodos PUT/DELETE
+
 // Middleware para inicio de sesión y cookies
 app.use(session({
     secret: process.env.SECRET_SESSION,
@@ -61,7 +59,7 @@ const OPENWEATHER_API_KEY = process.env.apikey;
 const LAT = zooConfig.lat;
 const LON = zooConfig.lon;
 
-// --- RUTAS ---
+/////////////////// RUTAS ////////////////// 
 // Inicio
 app.get('/', (req, res) => {
     res.render('index.ejs', {
@@ -138,7 +136,7 @@ app.post('/loginEmpleado', async (req, res) => {
     }
 });
 
-// --- VISTAS DEL NAV ---
+//////////// VISTAS DEL NAV /////////////
 
 // Ruta para la API del clima
 app.get('/api/weather', async (req, res) => {
@@ -166,11 +164,32 @@ app.get('/dashboard', async (req, res) => {
     }
 
     try {
+        // Obtener eventos de hoy
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0); // Establecer a inicio del día
+
+        const eventosHoy = await Evento.find({
+            fecha: {
+                $gte: hoy, // Mayor o igual que hoy
+                $lt: new Date(hoy.getTime() + 24 * 60 * 60 * 1000) // Menor que mañana
+            }
+        }).sort({ hora: 1 }); // Ordenar por hora ascendente
+
+        // Obtener incidencias pendientes
+        const incidenciasPendientes = await Incidencia.find({ 
+            estado: 'pendiente' 
+        })
+        .populate('zona', 'nombre')
+        .sort({ fecha: -1 })
+        .limit(5); // Limitar a 5 incidencias para el dashboard
+
         res.render('dashboard', {
             title: 'TaskerZoo - Dashboard',
             nombreEmpleado: req.session.usuario?.nombre || 'Bienvenido',
             paginaActual: 'dashboard',
-            nombreZoo: zooConfig.nombre
+            nombreZoo: zooConfig.nombre,
+            eventosHoy: eventosHoy || [], // Pasar eventos a la vista
+            incidenciasPendientes: incidenciasPendientes || []
         });
     } catch (error) {
         console.log('Error al acceder al dashboard', error);
@@ -193,11 +212,12 @@ app.get('/animales', async (req, res) => {
         const familiasPath = path.join(__dirname, 'public', 'data', 'familiasCientificas.json');
         const data = fs.readFileSync(familiasPath, 'utf-8');
         const familias = JSON.parse(data); // Array de objetos con nombreComun y nombreCientifico
+        const zonas = await Zona.find();
 
         // Obtener los animales de la base de datos
         const animales = await Animal.find().sort({ createdAt: -1 }); // Ordenados por fecha descendente
 
-        res.render('animales.ejs', { title: 'TaskerZoo - Gestión de Animales', nombreEmpleado: req.session.usuario?.nombre || 'Empleado', paginaActual: 'animales', familias, animales, nombreZoo: zooConfig.nombre });
+        res.render('animales.ejs', { title: 'TaskerZoo - Gestión de Animales', nombreEmpleado: req.session.usuario?.nombre || 'Empleado', paginaActual: 'animales', familias, animales, zonas, nombreZoo: zooConfig.nombre });
     } catch (error) {
         console.log('Error al acceder a la gestión de los animales', error);
         res.status(500).send('Error interno del servidor');
@@ -226,7 +246,126 @@ app.post('/animales', async (req, res) => {
     }
 });
 
-// Salud
+// Eliminar un animal
+app.delete('/animales/:id', async (req, res) => {
+    try {
+        if (!req.session.usuario) {
+            return res.status(401).json({ error: 'No autorizado' });
+        }
+
+        const animalEliminado = await Animal.findByIdAndDelete(req.params.id);
+
+        if (!animalEliminado) {
+            return res.status(404).json({ message: 'Animal no encontrado' });
+        }
+
+        res.json({ success: true, message: 'Animal eliminado correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar animal:', error);
+        res.status(500).json({ error: 'Error al eliminar animal' });
+    }
+});
+
+// Salud - Vista general
+app.get('/salud', async (req, res) => {
+    try {
+        // Obtener los últimos registros de todos los animales
+        const registrosSalud = await RegistroSalud.find()
+            .populate('animalId', 'nombre _id')
+            .sort({ fecha: -1 })
+            .limit(10);
+
+        // Obtener lista de animales para el selector
+        const animales = await Animal.find().sort({ nombre: 1 });
+
+        res.render('saludAnimales', {
+            title: 'TaskerZoo - Salud y Bienestar',
+            nombreEmpleado: req.session.usuario?.nombre || 'Empleado',
+            paginaActual: 'salud',
+            registrosSalud: registrosSalud || [],
+            animales,
+            nombreZoo: zooConfig.nombre
+        });
+    } catch (error) {
+        console.error('Error al acceder a la salud de los animales', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
+// Ruta para la vista de salud de un animal específico
+app.get('/salud/:id', async (req, res) => {
+    try {
+        const animal = await Animal.findById(req.params.id);
+        if (!animal) {
+            return res.status(404).send('Animal no encontrado');
+        }
+
+        const registrosSalud = await RegistroSalud.find({ animalId: req.params.id }).sort({ fecha: -1 });
+
+        res.render('saludYBienestar', {
+            title: 'Salud y Bienestar - TaskerZoo',
+            nombreEmpleado: req.session.usuario?.nombre || 'Empleado',
+            paginaActual: 'salud',
+            animal,
+            registrosSalud,
+            nombreZoo: zooConfig.nombre
+        });
+    } catch (error) {
+        console.error('Error al acceder a la vista de salud:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
+// API para registros de salud
+app.post('/api/registros-salud', async (req, res) => {
+    try {
+        const { animalId, tipoRevision, observaciones } = req.body;
+
+        // Validación adicional
+        if (!tipoRevision || !observaciones) {
+            return res.status(400).json({ error: 'Tipo de revisión y observaciones son requeridos' });
+        }
+
+        const nuevoRegistro = new RegistroSalud({
+            animalId,
+            tipoRevision,
+            observaciones
+        });
+
+        await nuevoRegistro.save();
+
+        // Devolver el registro creado con los datos completos
+        res.status(201).json({
+            _id: nuevoRegistro._id,
+            animalId: nuevoRegistro.animalId,
+            fecha: nuevoRegistro.fecha,
+            tipoRevision: nuevoRegistro.tipoRevision,
+            observaciones: nuevoRegistro.observaciones,
+            createdAt: nuevoRegistro.createdAt
+        });
+    } catch (error) {
+        console.error('Error al crear registro de salud:', error);
+        res.status(500).json({
+            error: 'Error al crear registro',
+            details: error.message
+        });
+    }
+});
+
+app.delete('/api/registros-salud/:id', async (req, res) => {
+    try {
+        const registro = await RegistroSalud.findByIdAndDelete(req.params.id);
+
+        if (!registro) {
+            return res.status(404).json({ message: 'Registro no encontrado' });
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error al eliminar registro de salud:', error);
+        res.status(500).json({ error: 'Error al eliminar registro' });
+    }
+});
 
 // Suministros
 app.get('/suministros', async (req, res) => {
@@ -439,6 +578,103 @@ app.delete('/eventos/:id', async (req, res) => {
 });
 
 // INCIDENCIAS
+app.get('/incidencias', async (req, res) => {
+    try {
+        const zonas = await Zona.find().sort({ nombre: 1 });
+        const incidencias = await Incidencia.find()
+            .populate({
+                path: 'zona',
+                select: 'nombre',
+                model: 'Zona'
+            })
+            .populate({
+                path: 'reportadaPor',
+                select: 'nombre',
+                model: 'Empleado'
+            })
+            .sort({ fecha: -1 });
+
+        res.render('incidencias', {
+            title: 'Incidencias - TaskerZoo',
+            nombreEmpleado: req.session.usuario?.nombre || 'Empleado',
+            paginaActual: 'incidencias',
+            zonas,
+            incidencias,
+            nombreZoo: zooConfig.nombre
+        });
+    } catch (error) {
+        console.error('Error al obtener incidencias:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
+// API para crear incidencias
+app.post('/api/incidencias', async (req, res) => {
+    try {
+        const { descripcion, zona, fecha, estado } = req.body;
+
+        // Verificar que la zona existe
+        const zonaExiste = await Zona.findById(zona);
+        if (!zonaExiste) {
+            return res.status(400).json({ error: 'Zona no válida' });
+        }
+
+        const nuevaIncidencia = new Incidencia({
+            descripcion,
+            zona: zona,
+            fecha,
+            estado: 'pendiente',
+            reportadaPor: req.session.usuario?.id
+        });
+
+        await nuevaIncidencia.save();
+
+        const incidenciaPopulada = await Incidencia.findById(nuevaIncidencia._id)
+            .populate('zona', 'nombre')
+            .populate('reportadaPor', 'nombre');
+
+        res.status(201).json(incidenciaPopulada);
+    } catch (error) {
+        console.error('Error al crear incidencia:', error);
+        res.status(500).json({ error: 'Error al crear incidencia' });
+    }
+});
+
+// API para resolver incidencias
+app.put('/api/incidencias/:id/resolver', async (req, res) => {
+    try {
+        const incidencia = await Incidencia.findByIdAndUpdate(
+            req.params.id,
+            { estado: 'resuelta' },
+            { new: true } // Devuelve el documento actualizado
+        );
+
+        if (!incidencia) {
+            return res.status(404).json({ message: 'Incidencia no encontrada' });
+        }
+
+        res.json(incidencia);
+    } catch (error) {
+        console.error('Error al resolver incidencia:', error);
+        res.status(500).json({ error: 'Error al resolver incidencia' });
+    }
+});
+
+// API para eliminar incidencias
+app.delete('/api/incidencias/:id', async (req, res) => {
+    try {
+        const incidencia = await Incidencia.findByIdAndDelete(req.params.id);
+
+        if (!incidencia) {
+            return res.status(404).json({ message: 'Incidencia no encontrada' });
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error al eliminar incidencia:', error);
+        res.status(500).json({ error: 'Error al eliminar incidencia' });
+    }
+});
 
 // AJUSTES
 app.get('/ajustes', async (req, res) => {
@@ -495,4 +731,4 @@ app.delete('/eliminar-cuenta', async (req, res) => {
     }
 });
 
-
+// ERROR 404

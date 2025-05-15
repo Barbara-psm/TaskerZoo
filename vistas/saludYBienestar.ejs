@@ -25,34 +25,41 @@
                                 d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                             <path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27" />
                         </svg>
-                        <h1 class="text-2xl font-bold text-gray-800">Registros de Salud y Bienestar</h1>
+                        <h1 class="text-2xl font-bold text-gray-800">Salud y Bienestar de <%= animal.nombre %>
+                        </h1>
                     </div>
 
-                    <!-- Últimos registros -->
+                    <!-- Info del animal -->
                     <div class="mb-8 p-4 bg-gray-50 rounded-lg">
                         <h2 class="text-xl font-semibold mb-2">
-                            Últimos registros de salud y comportamiento
+                            <%= animal.nombre %>
                         </h2>
-                        <% if (registrosSalud.length> 0) { %>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <h3 class="font-semibold mb-1">Salud</h3>
-                                    <ul class="space-y-2">
-                                        <% registrosSalud.forEach(registro=> { %>
-                                            <li class="p-2 bg-white rounded border border-gray-200">
-                                                <strong>
-                                                    <%= registro.animalId?.nombre || 'Animal desconocido' %>
-                                                </strong>:
-                                                <%= registro.tipoRevision || registro.observaciones %>
-                                                    (<%= registro.fecha.toLocaleDateString('es-ES') %>)
-                                            </li>
-                                            <% }) %>
-                                    </ul>
-                                </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Especie</p>
+                                <p>
+                                    <%= animal.especie %>
+                                </p>
                             </div>
-                            <% } else { %>
-                                <p class="text-gray-500 italic">No hay registros de salud recientes</p>
-                                <% } %>
+                            <div>
+                                <p class="text-sm text-gray-500">Edad</p>
+                                <p>
+                                    <%= animal.edad %>
+                                </p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Zona</p>
+                                <p>
+                                    <%= animal.zona %>
+                                </p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Familia</p>
+                                <p>
+                                    <%= animal.familiaCientifica %>
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Pestañas -->
@@ -71,18 +78,7 @@
                             <div class="mb-6">
                                 <h3 class="text-lg font-semibold mb-4">Nuevo Registro de Salud</h3>
                                 <form id="formSalud" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Animal</label>
-                                        <select name="animalId" required
-                                            class="border border-gray-300 rounded px-4 py-2 w-full">
-                                            <option value="">Seleccione un animal</option>
-                                            <% animales.forEach(animal=> { %>
-                                                <option value="<%= animal._id %>">
-                                                    <%= animal.nombre %> (<%= animal.especie %>)
-                                                </option>
-                                                <% }) %>
-                                        </select>
-                                    </div>
+                                    <input type="hidden" name="animalId" value="<%= animal._id %>">
 
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de
@@ -123,9 +119,6 @@
                                                     <p class="font-medium">
                                                         <%= registro.tipoRevision %>
                                                     </p>
-                                                    <p class="text-sm font-semibold">
-                                                        <%= registro.animalId?.nombre || 'Animal desconocido' %>
-                                                    </p>
                                                     <p class="text-sm text-gray-500">
                                                         <%= registro.fecha.toLocaleDateString('es-ES', { day: '2-digit'
                                                             , month: '2-digit' , year: 'numeric' }) %>
@@ -150,7 +143,8 @@
                                         </div>
                                         <% }) %>
                                             <% } else { %>
-                                                <p class="text-gray-500 italic">No hay registros de salud</p>
+                                                <p class="text-gray-500 italic">No hay registros de salud para este
+                                                    animal</p>
                                                 <% } %>
                             </div>
                         </div>

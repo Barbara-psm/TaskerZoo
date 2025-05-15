@@ -1,0 +1,44 @@
+Date : 2025-05-13 23:23:16
+Directory : d:\TaskerZoo
+Total : 12 files,  853 codes, 46 comments, 104 blanks, all 1003 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |          5 |        466 |         35 |         76 |        577 |
+| HTML       |          4 |        354 |         11 |         20 |        385 |
+| CSS        |          1 |         25 |          0 |          8 |         33 |
+| JSON       |          2 |          8 |          0 |          0 |          8 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                              | files      | code       | comment    | blank      | total      |
++---------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                 |         12 |        853 |         46 |        104 |      1,003 |
+| . (Files)                                         |          3 |        186 |         15 |         35 |        236 |
+| public                                            |          5 |        313 |         20 |         49 |        382 |
+| public\css                                        |          1 |         25 |          0 |          8 |         33 |
+| public\js                                         |          4 |        288 |         20 |         41 |        349 |
+| vistas                                            |          4 |        354 |         11 |         20 |        385 |
++---------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                          | language   | code       | comment    | blank      | total      |
++---------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\TaskerZoo\app.js                               | JavaScript |        178 |         15 |         35 |        228 |
+| d:\TaskerZoo\package-lock.json                    | JSON       |          7 |          0 |          0 |          7 |
+| d:\TaskerZoo\package.json                         | JSON       |          1 |          0 |          0 |          1 |
+| d:\TaskerZoo\public\css\estiloTaskerZooOutput.css | CSS        |         25 |          0 |          8 |         33 |
+| d:\TaskerZoo\public\js\codigoAnimales.js          | JavaScript |         48 |          7 |         10 |         65 |
+| d:\TaskerZoo\public\js\codigoEventos.js           | JavaScript |        105 |          7 |         12 |        124 |
+| d:\TaskerZoo\public\js\codigoSalud.js             | JavaScript |        135 |          7 |         19 |        161 |
+| d:\TaskerZoo\public\js\codigoZonas.js             | JavaScript |          0 |         -1 |          0 |         -1 |
+| d:\TaskerZoo\vistas\ajustes.ejs                   | HTML       |         15 |          0 |          3 |         18 |
+| d:\TaskerZoo\vistas\animales.ejs                  | HTML       |         23 |          1 |          0 |         24 |
+| d:\TaskerZoo\vistas\dashboard.ejs                 | HTML       |         14 |          0 |         -1 |         13 |
+| d:\TaskerZoo\vistas\saludAnimales.ejs             | HTML       |        302 |         10 |         18 |        330 |
+| Total                                             |            |        853 |         46 |        104 |      1,003 |
++---------------------------------------------------+------------+------------+------------+------------+------------+

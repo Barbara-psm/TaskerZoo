@@ -108,7 +108,7 @@ async function eliminarEvento(id) {
     }
 
     try {
-        const response = await fetch(`/api/eventos/${id}`, {
+        const response = await fetch(`/eventos/${id}`, {
             method: 'DELETE'
         });
 
