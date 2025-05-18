@@ -7,5 +7,4 @@ const aforoSchema = new Schema({
 }, { timestamps: true });
 
 const Aforo = mongoose.model('Aforo', aforoSchema);
-
 module.exports = Aforo

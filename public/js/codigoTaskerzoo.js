@@ -31,23 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 100);
     }, 4100);
 
-    // Función para leer cookies (similar a Cookies.get())
-    function getCookie(nombre) {
-        const valor = `; ${document.cookie}`;
-        const partes = valor.split(`; ${nombre}=`);
-        if (partes.length === 2) return partes.pop().split(';').shift();
-    }
-
-    // funcion mejorada para leer cookies?
-    // function getCookie(name) {
-    //     const cookies = document.cookie.split(';');
-    //     for (let cookie of cookies) {
-    //         const [cookieName, cookieValue] = cookie.trim().split('=');
-    //         if (cookieName === name) return decodeURIComponent(cookieValue);
-    //     }
-    //     return null;
-    // }
-
     btnEntrar.addEventListener('click', async function () {
         try {
             const respuesta = await fetch('/verificarSesion');
@@ -137,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (error) {
             console.error('Error al iniciar sesión', error);
-            mensajeErrorLogin.innerHTML = "No se ha podido iniciar sesión";
+            mensajeErrorLogin.innerHTML = "Correo o contraseña incorrectos";
         }
     });
 

@@ -4,158 +4,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <link rel="stylesheet" href="/css/estiloTaskerZooOutput.css">
-    <link rel="icon" href="/favicons/faviconTaskerZoo.ico" type="image/x-icon">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 
-<body>
-    <main class="relative bg-[#EDEDED] flex items-center justify-center min-h-screen min-w-full">
+<body class="bg-gray-50 font-sans">
 
-        <!-- Intro TaskerZoo -->
-        <div id="introTaskerZoo" class="absolute inset-0 flex items-center justify-center bg-[#EDEDED] z-50">
-            <h1 class="text-8xl font-bold opacity-0 transition-opacity duration-1000"><span
-                    class="text-brand-green-light">Tasker</span><span class="text-brand-brown-light">Zoo</span></h1>
+    <!-- Header -->
+    <header
+        class="bg-gradient-to-br from-animundo-green to-animundo-blue text-white py-6 px-4 flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl md:text-5xl font-bold">ANIMUNDO</h1>
+            <p class="text-md md:text-xl opacity-90">Un mundo salvaje por descubrir</p>
         </div>
+        <a href="/taskerzoo"
+            class="bg-white text-animundo-green font-bold rounded-lg shadow hover:bg-gray-100 transition">
+            <div class="flex justify-between items-center px-4 py-2 gap-2">
+                <span>Gestiona tu zoo</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-log-in-icon lucide-log-in">
+                    <path d="m10 17 5-5-5-5" />
+                    <path d="M15 12H3" />
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                </svg>
+            </div>
+        </a>
+    </header>
 
-        <!-- Botón de entrar -->
-        <div class="flex items-center justify-center">
-            <button id="btnEntrar"
-                class="border-4 border-brand-green-light bg-brand-green-light px-6 py-2 rounded text-xl text-white font-semibold hover:bg-gradient-to-tr from-brand-green-light to-[#859139] hover:text-white hover:shadow-lg mt-8 opacity-0 transition-opacity duration-700 hidden">
-                Entrar
-            </button>
+    <!-- Sección 1: Publicidad -->
+    <section class="w-full bg-white py-12 px-4 text-center">
+        <div class="container mx-auto max-w-3xl">
+            <h2 class="text-3xl font-bold text-animundo-green mb-4">Bienvenido a Animundo</h2>
+            <p class="text-lg text-gray-700">
+                Explora un mundo lleno de vida salvaje, aprende sobre especies increíbles y vive experiencias
+                inolvidables en nuestro zoológico ubicado en el corazón de la ciudad.
+            </p>
         </div>
+    </section>
 
-        <!-- Formularios que están ocultos inicialmente -->
-        <!-- Formulario de registro -->
-        <div id="formularioSignUp" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <form id="formSignUp" action="/signup" method="POST"
-                class="bg-white rounded-xl shadow-md w-96 transform opacity-100 transition-all duration-500 ease-in-out">
-                <div class="p-8 space-y-6">
-                    <h2 class="text-2xl font-bold text-center">Regístrate</h2>
+    <!-- Sección 2: Mapa -->
+    <section class="w-full bg-gray-100 py-12 px-4">
+        <div class="container mx-auto max-w-4xl bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-animundo-green border-b-2 border-animundo-yellow pb-2 mb-4">Ubicación
+            </h2>
+            <p class="mb-4">Encuéntranos en el corazón de la ciudad</p>
+            <div id="esriMap" class="h-96 rounded-lg"></div>
+            <p class="text-center font-bold mt-4">
+                Calle Animalia, 123 · Parque Natural Sierra Verde · 28045 Madrid, España
+            </p>
+        </div>
+    </section>
 
-                    <!-- Nombre del empleado -->
-                    <div class="space-y-2">
-                        <label for="newUser" class="block text-sm font-medium text-gray-700">
-                            Nombre:
-                        </label>
-                        <input type="text" name="newUser" placeholder="Nombre"
-                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#A2B04C]">
+    <!-- Sección 3: Formulario de entradas -->
+    <section class="w-full bg-white py-12 px-4">
+        <div class="container mx-auto max-w-4xl bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-animundo-green border-b-2 border-animundo-yellow pb-2 mb-6">Compra tus
+                entradas</h2>
+            <form id="formularioEntradas" class="space-y-4">
+                <!-- Fecha de visita con Flatpickr -->
+                <div>
+                    <label for="fechaVisita" class="block text-gray-700 font-medium mb-1">Fecha de visita</label>
+                    <input type="text" id="fechaVisita"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                        placeholder="Selecciona una fecha" required>
+                </div>
+
+                <!-- Cantidad de entradas -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Adultos -->
+                    <div>
+                        <label for="cantidadAdultos" class="block text-gray-700 font-medium mb-1">Adultos (12+
+                            años)</label>
+                        <input type="number" id="cantidadAdultos" min="0" value="1"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                            required>
+                        <p class="text-sm text-gray-500 mt-1">€15 por entrada</p>
                     </div>
 
-                    <!-- Rol del empleado -->
-                    <div class="space-y-2">
-                        <label for="newRol" class="block text-sm font-medium text-gray-700">
-                            Rol:
-                        </label>
-                        <select name="newRol" id="rol"
-                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#A2B04C]">
-                            <option value="cuidador">Cuidador</option>
-                            <option value="veterinario">Veterinario</option>
-                            <option value="admin">Administrador</option>
-                            <option value="monitor">Monitor</option>
-                            <option value="taquilla">Taquilla</option>
-                        </select>
+                    <!-- Niños -->
+                    <div>
+                        <label for="cantidadNinos" class="block text-gray-700 font-medium mb-1">Niños (3-11
+                            años)</label>
+                        <input type="number" id="cantidadNinos" min="0" value="0"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
+                        <p class="text-sm text-gray-500 mt-1">€10 por entrada</p>
                     </div>
 
-                    <!-- Correo del empleado -->
-                    <div class="space-y-2">
-                        <label for="newEmail" class="block text-sm font-medium text-gray-700">
-                            Correo electrónico:
-                        </label>
-                        <input type="text" name="newEmail" placeholder="Correo"
-                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#A2B04C]">
+                    <!-- Seniors -->
+                    <div>
+                        <label for="cantidadSeniors" class="block text-gray-700 font-medium mb-1">Seniors (65+
+                            años)</label>
+                        <input type="number" id="cantidadSeniors" min="0" value="0"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
+                        <p class="text-sm text-gray-500 mt-1">€12 por entrada</p>
+                    </div>
+                </div>
+
+                <!-- Datos del comprador -->
+                <div class="pt-4 border-t border-gray-200">
+                    <h3 class="text-lg font-bold text-animundo-blue mb-3">Datos del comprador</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Nombre -->
+                        <div>
+                            <label for="nombre" class="block text-gray-700 font-medium mb-1">Nombre completo</label>
+                            <input type="text" id="nombre" name="nombre"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                                required>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="correo" class="block text-gray-700 font-medium mb-1">Correo electrónico</label>
+                            <input type="email" id="correo" name="correo"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                                required>
+                        </div>
                     </div>
 
-                    <!-- Contraseña del empleado -->
-                    <div class="space-y-2">
-                        <label for="newPassword" class="block text-sm font-medium text-gray-700">
-                            Contraseña:
-                        </label>
-                        <input type="password" name="newPassword" placeholder="Contraseña"
-                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#A2B04C]">
+                    <!-- Teléfono -->
+                    <div class="mt-4">
+                        <label for="telefono" class="block text-gray-700 font-medium mb-1">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                            required>
+                    </div>
+                </div>
+
+                <!-- Método de pago -->
+                <div class="pt-4 border-t border-gray-200">
+                    <h3 class="text-lg font-bold text-animundo-blue mb-3">Método de pago</h3>
+
+                    <div class="space-y-4">
+                        <!-- Selección de método -->
+                        <div>
+                            <label for="metodo-pago" class="block text-gray-700 font-medium mb-1">Seleccione
+                                método</label>
+                            <select id="metodo-pago" name="metodo-pago"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                                required>
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="tarjeta">Tarjeta de crédito/débito</option>
+                                <option value="paypal">PayPal</option>
+                            </select>
+                        </div>
+
+                        <!-- Detalles de tarjeta (se muestra solo si selecciona tarjeta) -->
+                        <div id="datos-tarjeta" class="hidden space-y-4 bg-gray-50 p-4 rounded-lg">
+                            <div>
+                                <label for="num-tarjeta" class="block text-gray-700 font-medium mb-1">Número de
+                                    tarjeta</label>
+                                <input type="text" id="num-tarjeta" name="num-tarjeta"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="fecha-caducidad" class="block text-gray-700 font-medium mb-1">Fecha de
+                                        caducidad</label>
+                                    <input type="month" id="fecha-caducidad" name="fecha-caducidad"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="cvc" class="block text-gray-700 font-medium mb-1">CVC</label>
+                                    <input type="text" id="cvc" name="cvc" maxlength="3"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen y botón de compra -->
+                <div class="pt-4 border-t border-gray-200">
+                    <div id="resumen-compra" class="hidden mb-4 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-bold text-animundo-green mb-2">Resumen de tu compra</h4>
+                        <div id="detalles-resumen" class="text-sm text-gray-700"></div>
+                        <div id="total-resumen" class="mt-2 font-bold"></div>
                     </div>
 
-                    <!-- Mensaje de validación -->
-                    <p id="mensajeErrorRegistro" class="text-sm text-red-500 h-4"></p>
-
-                    <!-- Botones del formulario -->
-                    <div class="flex justify-between pt-2">
-                        <button type="reset"
-                            class="bg-red-300 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-300 transition">
-                            Cancelar
-                        </button>
-                        <button type="submit"
-                            class="bg-[#A2B04C] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#8A993C] transition">
-                            Registrarse
-                        </button>
-                    </div>
-
-                    <div class="flex justify-between pt-4">
-                        <button type="button" class="volverInicio text-sm text-gray-500 hover:underline">
-                            <a href="/">← Volver</a>
-                        </button>
-                        <button type="button" id="irAlLogin" class="text-sm text-gray-500 hover:underline">
-                            ¿Ya tienes una cuenta? Ir a Log in
-                        </button>
-                    </div>
+                    <button type="submit"
+                        class="w-full bg-animundo-orange hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                        Comprar entradas
+                    </button>
                 </div>
             </form>
         </div>
+    </section>
 
-        <!-- Formulario para iniciar sesión y crear la cookie -->
-        <div id="formularioLogin" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <form id="formLogin" action="/loginEmpleado" method="POST"
-                class="bg-white rounded-xl shadow-md w-96 transform opacity-100 transition-all duration-500 ease-in-out">
-                <div class="p-8 space-y-6">
-                    <h2 class="text-2xl font-bold text-center">Inicia sesión</h2>
-
-                    <!-- Correo del empleado -->
-                    <div class="space-y-2">
-                        <label for="empleadoEmail" class="block text-sm font-medium text-gray-700">
-                            Correo electrónico:
-                        </label>
-                        <input type="text" name="empleadoEmail" placeholder="Correo"
-                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#A2B04C]">
-                    </div>
-
-                    <!-- Contraseña del empleado -->
-                    <div class="space-y-2">
-                        <label for="empleadoPassword" class="block text-sm font-medium text-gray-700">
-                            Contraseña:
-                        </label>
-                        <input type="password" name="empleadoPassword" placeholder="Contraseña"
-                            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#A2B04C]">
-                    </div>
-
-                    <!-- Mensaje de validación -->
-                    <p id="mensajeErrorLogin" class="text-sm text-red-500 h-4"></p>
-
-                    <!-- Botones del formulario -->
-                    <div class="flex justify-between pt-2">
-                        <button type="reset"
-                            class="bg-red-300 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-300 transition">
-                            Cancelar
-                        </button>
-                        <button type="submit"
-                            class="bg-[#A2B04C] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#8A993C] transition">
-                            Aceptar
-                        </button>
-                    </div>
-
-                    <div class="flex justify-between pt-4">
-                        <button type="button" class="volverInicio text-sm text-gray-500 hover:underline">
-                            <a href="/">← Volver</a>
-                        </button>
-                        <button type="button" id="irAlSignup" class="text-sm text-gray-500 hover:underline">
-                            ¿No tienes una cuenta? Regístrate
-                        </button>
-                    </div>
+    <!-- Sección 4: Tarifas y horarios -->
+    <section class="w-full bg-gray-100 py-12 px-4">
+        <div class="container mx-auto max-w-4xl bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-2xl font-bold text-animundo-green border-b-2 border-animundo-yellow pb-2 mb-6">Horarios y
+                tarifas</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-animundo-blue mb-4">Horarios</h3>
+                    <p class="mb-2"><span class="font-semibold">Lunes a Viernes:</span> 9:00 - 18:00</p>
+                    <p><span class="font-semibold">Fines de semana:</span> 8:00 - 20:00</p>
                 </div>
-            </form>
+                <div>
+                    <h3 class="text-xl font-bold text-animundo-blue mb-4">Tarifas</h3>
+                    <p class="mb-2"><span class="font-semibold">Adultos:</span> €15</p>
+                    <p class="mb-2"><span class="font-semibold">Niños:</span> €10</p>
+                    <p><span class="font-semibold">Seniors:</span> €12</p>
+                </div>
+            </div>
         </div>
-    </main>
-    <script src="/js/codigoIndex.js"></script>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 text-center">
+        <div class="container mx-auto px-4">
+            <p class="mb-2">© 2025 Animundo - Todos los derechos reservados</p>
+            <p>Contacto: info@animundo.com · Tel: +34 123 456 789</p>
+        </div>
+    </footer>
+
+    <script>
+        // Inicializar mapa con estilo ESRI World Imagery
+        const lat = <%= zoo.lat %>;
+        const lon = <%= zoo.lon %>;
+
+        const map = L.map('esriMap').setView([lat, lon], 17);
+
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles © Esri - Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+            maxZoom: 18
+        }).addTo(map);
+
+        L.marker([lat, lon]).addTo(map).bindPopup('Parque Zoológico Animundo');
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Configuración de Flatpickr para la fecha de visita
+            flatpickr("#fechaVisita", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                locale: "es",
+                minDate: "today",
+                disable: [
+                    function (date) {
+                        // Deshabilitar días específicos (ej. lunes)
+                        return (date.getDay() === 1); // 1 es lunes
+                    }
+                ]
+            });
+
+            // Mostrar/ocultar detalles de tarjeta según método de pago
+            document.getElementById('metodo-pago').addEventListener('change', function () {
+                const tarjetaSection = document.getElementById('datos-tarjeta');
+                tarjetaSection.classList.toggle('hidden', this.value !== 'tarjeta');
+            });
+
+            // Calcular y mostrar resumen al cambiar cantidades
+            const calcularResumen = () => {
+                const adultos = parseInt(document.getElementById('cantidadAdultos').value) || 0;
+                const ninos = parseInt(document.getElementById('cantidadNinos').value) || 0;
+                const seniors = parseInt(document.getElementById('cantidadSeniors').value) || 0;
+                const total = (adultos * 15) + (ninos * 10) + (seniors * 12);
+
+                if (total > 0) {
+                    document.getElementById('resumen-compra').classList.remove('hidden');
+                    document.getElementById('detalles-resumen').innerHTML = `
+                <p>Adultos: ${adultos} x €15 = €${adultos * 15}</p>
+                <p>Niños: ${ninos} x €10 = €${ninos * 10}</p>
+                <p>Seniors: ${seniors} x €12 = €${seniors * 12}</p>
+            `;
+                    document.getElementById('total-resumen').textContent = `Total: €${total}`;
+                } else {
+                    document.getElementById('resumen-compra').classList.add('hidden');
+                }
+            };
+
+            // Ir cambiando las cantidades
+            ['cantidadAdultos', 'cantidadNinos', 'cantidadSeniors'].forEach(id => {
+                document.getElementById(id).addEventListener('change', calcularResumen);
+            });
+
+            // Manejar el envío del formulario
+            document.getElementById('formularioEntradas').addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                // Obtener valores
+                const fechaVisita = document.getElementById('fechaVisita').value;
+                const adultos = parseInt(document.getElementById('cantidadAdultos').value) || 0;
+                const ninos = parseInt(document.getElementById('cantidadNinos').value) || 0;
+                const seniors = parseInt(document.getElementById('cantidadSeniors').value) || 0;
+                const totalEntradas = adultos + ninos + seniors;
+
+                try {
+                    // Validaciones mejoradas
+                    if (!fechaVisita) throw new Error('Por favor selecciona una fecha de visita');
+                    if (isNaN(adultos)) throw new Error('Cantidad de adultos no válida');
+                    if (isNaN(ninos)) throw new Error('Cantidad de niños no válida');
+                    if (isNaN(seniors)) throw new Error('Cantidad de seniors no válida');
+                    if (totalEntradas <= 0) throw new Error('Debes comprar al menos una entrada');
+
+                    // Enviar datos al servidor
+                    const res = await fetch('/api/entradas', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            fecha: fechaVisita,
+                            entradas: totalEntradas
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        throw new Error(data.message || 'Error al registrar la compra');
+                    }
+
+                    alert(`¡Compra realizada con éxito! ${totalEntradas} entradas registradas para el ${fechaVisita}`);
+
+                } catch (err) {
+                    console.error('Error completo:', err);
+                    alert(err.message);
+                }
+            });
+        });
+    </script>
+    <!-- Flatpickr JS local -->
+    <script src="/node_modules/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="/node_modules/flatpickr/dist/l10n/es.js"></script>
 </body>
 
 </html>

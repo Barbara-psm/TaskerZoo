@@ -15,6 +15,7 @@ const Zona = require('./models/Zonas');
 const Evento = require('./models/Eventos');
 const RegistroSalud = require('./models/RegistrosSalud');
 const Incidencia = require('./models/Incidencias');
+const Aforo = require('./models/Aforo');
 const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs'); // Registrar ejs
@@ -59,10 +60,24 @@ const OPENWEATHER_API_KEY = process.env.apikey;
 const LAT = zooConfig.lat;
 const LON = zooConfig.lon;
 
+// Cargar las imágenes para el fondo animado
+const backgroundsConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'public', 'data', 'backgrounds.json')));
+
 /////////////////// RUTAS ////////////////// 
 // Inicio
 app.get('/', (req, res) => {
     res.render('index.ejs', {
+        title: 'Animundo - Parque Zoológico',
+        zoo: {  // Pasarlo como objeto zoo
+            lat: LAT,
+            lon: LON
+        }
+    });
+});
+
+// VISTA DE ADMINISTRADOR
+app.get('/taskerzoo', (req, res) => {
+    res.render('taskerzoo.ejs', {
         title: 'TaskerZoo - Inicio'
     });
 });
@@ -164,33 +179,35 @@ app.get('/dashboard', async (req, res) => {
     }
 
     try {
-        // Obtener eventos de hoy
+        // Obtener la fecha de hoy
         const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0); // Establecer a inicio del día
+        hoy.setHours(0, 0, 0, 0);
 
+        // Consulta para obtener eventos e incidencias
         const eventosHoy = await Evento.find({
-            fecha: {
-                $gte: hoy, // Mayor o igual que hoy
-                $lt: new Date(hoy.getTime() + 24 * 60 * 60 * 1000) // Menor que mañana
-            }
-        }).sort({ hora: 1 }); // Ordenar por hora ascendente
+            fecha: { $gte: hoy, $lt: new Date(hoy.getTime() + 24 * 60 * 60 * 1000) }
+        }).sort({ hora: 1 });
 
-        // Obtener incidencias pendientes
-        const incidenciasPendientes = await Incidencia.find({ 
-            estado: 'pendiente' 
-        })
-        .populate('zona', 'nombre')
-        .sort({ fecha: -1 })
-        .limit(5); // Limitar a 5 incidencias para el dashboard
+        const incidenciasPendientes = await Incidencia.find({ estado: 'pendiente' })
+            .populate('zona', 'nombre')
+            .sort({ fecha: -1 })
+            .limit(5);
+
+        // Consulta para el aforo de hoy
+        const aforoHoy = await Aforo.findOne({ fecha: hoy });
+        const entradasHoy = aforoHoy ? aforoHoy.entradasVendidas : 0;
 
         res.render('dashboard', {
             title: 'TaskerZoo - Dashboard',
             nombreEmpleado: req.session.usuario?.nombre || 'Bienvenido',
             paginaActual: 'dashboard',
             nombreZoo: zooConfig.nombre,
-            eventosHoy: eventosHoy || [], // Pasar eventos a la vista
-            incidenciasPendientes: incidenciasPendientes || []
+            eventosHoy: eventosHoy || [],
+            incidenciasPendientes: incidenciasPendientes || [],
+            backgroundImages: backgroundsConfig.images,
+            entradasHoy: entradasHoy // Pasar el número de entradas
         });
+
     } catch (error) {
         console.log('Error al acceder al dashboard', error);
         res.status(500).send('Error interno del servidor');
@@ -413,6 +430,55 @@ app.post('/suministros', async (req, res) => {
     }
 });
 
+// Verificar si un suministro existe
+app.get('/suministros/verificar', async (req, res) => {
+    try {
+        const { nombre } = req.query;
+        const suministro = await Suministro.findOne({ nombre });
+        res.json({ existe: !!suministro });
+    } catch (error) {
+        console.error('Error al verificar suministro:', error);
+        res.status(500).json({ error: 'Error al verificar suministro' });
+    }
+});
+
+// Actualizar suministro
+app.put('/suministros/:id', async (req, res) => {
+    try {
+        const { cantidad } = req.body;
+        const suministro = await Suministro.findByIdAndUpdate(
+            req.params.id,
+            { cantidad },
+            { new: true }
+        );
+
+        if (!suministro) {
+            return res.status(404).send('Suministro no encontrado');
+        }
+
+        res.json(suministro);
+    } catch (error) {
+        console.error('Error al actualizar suministro:', error);
+        res.status(500).send('Error al actualizar suministro');
+    }
+});
+
+// API para eliminar suministros
+app.delete('/api/suministros/:id', async (req, res) => {
+    try {
+        const suministro = await Suministro.findByIdAndDelete(req.params.id);
+
+        if (!suministro) {
+            return res.status(404).json({ message: 'Suministro no encontrado' });
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error al eliminar suministro:', error);
+        res.status(500).json({ error: 'Error al eliminar suministro' });
+    }
+});
+
 // ZONAS
 app.get('/zonas', async (req, res) => {
     try {
@@ -521,8 +587,20 @@ app.get('/personal', async (req, res) => {
 // EVENTOS
 app.get('/eventos', async (req, res) => {
     try {
-        // Obtener todos los eventos ordenados por fecha (más recientes primero)
-        const eventos = await Evento.find().sort({ fecha: 1 });
+        // Primero eliminar eventos pasados
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0); // Inicio del día actual
+
+        // Eliminar eventos con fecha anterior a hoy
+        await Evento.deleteMany({
+            fecha: { $lt: hoy }
+        });
+
+        // Luego obtener todos los eventos futuros ordenados por fecha
+        const eventos = await Evento.find({
+            fecha: { $gte: hoy } // Solo eventos futuros o de hoy
+        }).sort({ fecha: 1 });
+
         // Obtener las zonas para el select del formulario
         const zonas = await Zona.find();
 
@@ -731,4 +809,41 @@ app.delete('/eliminar-cuenta', async (req, res) => {
     }
 });
 
+// MANEJAR LA VENTA DE ENTRADAS DEL ZOO
+app.post('/api/entradas', async (req, res) => {
+    try {
+        const { fecha, entradas } = req.body;
+
+        // Buscar registro existente o crear uno nuevo
+        const aforo = await Aforo.findOneAndUpdate(
+            { fecha: new Date(fecha) },
+            { $inc: { entradasVendidas: entradas } }, // Incrementar el valor existente
+            {
+                upsert: true, // Crear el documento si no existe
+                new: true
+            }
+        );
+
+        res.json({
+            success: true,
+            message: `Entradas registradas para ${fecha}`,
+            totalEntradas: aforo.entradasVendidas
+        });
+
+    } catch (error) {
+        console.error('Error al registrar entradas:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al registrar las entradas'
+        });
+    }
+});
+
 // ERROR 404
+app.use((req, res, next) => {
+    res.status(404).render('404', {
+        title: 'Página no encontrada | TaskerZoo',
+        nombreZoo: zooConfig.nombre,
+        nombreEmpleado: req.session.usuario?.nombre || 'Empleado'
+    });
+});

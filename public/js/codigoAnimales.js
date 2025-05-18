@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Recargar la página para ver los cambios
                 window.location.reload();
             } else {
                 throw new Error(data.error || 'Error al eliminar el animal');
@@ -59,12 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const especie = document.getElementById('especie').value.trim();
         const edadValor = document.getElementById('edad').value.trim();
         const unidadEdad = document.getElementById('unidadEdad').value;
-        const sexoSeleccionado = document.getElementById('sexo').value;
+        const sexo = document.getElementById('sexo').value;
         const zona = document.getElementById('zona').value;
         const familiaCientifica = document.getElementById('familiaCientifica').value;
 
         // Validación básica
-        if (!nombre || !especie || !sexoSeleccionado || !zona || !familiaCientifica) {
+        if (!nombre || !especie || !sexo || !zona || !familiaCientifica) {
             alert('Por favor, rellena todos los campos.');
             return;
         }
@@ -87,18 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
             edadFinal = `${edadNum} ${unidadesMap[unidadEdad]}`;
         }
 
-        let sexo = '';
-        if (sexoSeleccionado === 'M') {
-            sexo = 'Masculino';
-        } else if (sexoSeleccionado === 'F') {
-            sexo = 'Femenino';
-        } else if (sexoSeleccionado === 'Desconocido') {
-            sexo = 'Desconocido';
-        } else {
-            alert('Por favor, selecciona un sexo válido.');
-            return;
-        }
-
         try {
             const res = await fetch('/animales', {
                 method: 'POST',
@@ -107,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     nombre,
                     especie,
                     edad: edadFinal,
-                    sexo,
+                    sexo, // (envía M/F/Desconocido)
                     familiaCientifica,
                     zona
                 })
@@ -116,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 alert('Animal añadido correctamente.');
                 form.reset();
-                window.location.reload(); // Recargar para mostrar el nuevo animal
+                window.location.reload();
             } else {
                 const errorMsg = await res.text();
                 alert('Error al añadir el animal: ' + errorMsg);
@@ -126,17 +113,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Filtros (mirar)
-    const filtroNombre = document.getElementById('filtroNombre');
+    // Filtro por zona
     const filtroZona = document.getElementById('filtroZona');
-
-    if (filtroNombre && filtroZona) {
-        [filtroNombre, filtroZona].forEach(input => {
-            input.addEventListener('input', filtrarAnimales);
-        });
+    if (filtroZona) {
+        filtroZona.addEventListener('change', filtrarAnimalesPorZona);
     }
 
-    function filtrarAnimales() {
-        
+    function filtrarAnimalesPorZona() {
+        const zonaSeleccionada = filtroZona.value.toLowerCase();
+        const filasAnimales = document.querySelectorAll('#tablaAnimales tr');
+
+        filasAnimales.forEach(fila => {
+            if (fila.cells.length > 0) { // Asegurarse que es una fila con datos
+                const zonaAnimal = fila.cells[5].textContent.toLowerCase().trim();
+
+                if (zonaSeleccionada === '' || zonaAnimal.includes(zonaSeleccionada)) {
+                    fila.style.display = '';
+                } else {
+                    fila.style.display = 'none';
+                }
+            }
+        });
     }
 });

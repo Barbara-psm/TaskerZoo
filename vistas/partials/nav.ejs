@@ -1,17 +1,18 @@
 <!-- Botón tipo hamburguesa para abrir el aside -->
 <button id="menuBtn" class="nav-menu-btn"> ☰
 </button>
-<!-- Botón para cerrar el nav cuando está abierto -->
-<button id="closeBtn"
-  class="hidden absolute top-4 left-[185px] text-black bg-brand-grey-light hover:bg-gray-300 px-2 py-1 rounded-full text-sm z-50">
-  ✕
-</button>
 
 <!-- Sidebar -->
 <aside id="sidebar"
   class="fixed top-0 left-0 w-56 h-screen bg-[#477963] text-white shadow-2xl z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
-  <div class="pt-4 pb-6 my-4 text-center text-3xl font-bold border-b border-gray-700">
-    <a href="/dashboard">TaskerZoo</a>
+  <!-- Botón para cerrar el nav cuando está abierto -->
+  <button id="closeBtn"
+    class="hidden absolute top-[10px] left-[185px] text-black bg-brand-grey-light hover:bg-gray-300 px-2 py-1 rounded-full text-sm z-50">
+    ✕
+  </button>
+  <div class="pt-4 pb-6 my-4 text-center text-4xl font-bold border-b border-gray-700">
+    <a href="/dashboard"><span class="text-brand-green-light text-outline-grey tracking-wider">Tasker</span><span
+        class="text-brand-brown-light text-outline-grey tracking-wider">Zoo</span></a>
   </div>
   <ul class="mt-4 space-y-3">
     <li>
@@ -129,7 +130,7 @@
 </aside>
 
 <!-- Botón flotante para hacer scroll hacia la parte superior abajo a la derecha -->
-<button id="scrollTopBtn" class="scroll-top-btn">
+<button id="scrollTopBtn" class="scroll-top-btn" aria-label="Volver arriba">
   <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffff"
     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
     class="lucide lucide-chevron-up-icon lucide-chevron-up">

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Comfortaa:wght@300..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Nabla&family=Oswald:wght@200..700&family=Oxanium:wght@200..800&family=Play:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Comfortaa:wght@300..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Nabla&family=Oswald:wght@200..700&family=Oxanium:wght@200..800&family=Play:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -19,12 +21,36 @@
     }
     
     /* Clase para el botón de cerrar el menú */
-    /* .nav-close-btn {
+    .nav-close-btn {
         @apply hidden absolute top-4 left-[185px] text-black bg-brand-grey-light hover:bg-gray-300 px-2 py-1 rounded-full text-sm z-50;
     }
-     */
+    
     /* Clase para el botón de scroll hacia arriba */
     .scroll-top-btn {
         @apply fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg z-50;
     }
+}
+
+:root {
+  --brand-grey-med: #383838ce;
+}
+
+.text-outline-grey {
+  text-shadow:
+    2px 0 0 var(--brand-grey-med),
+   -2px 0 0 var(--brand-grey-med),
+    0 2px 0 var(--brand-grey-med),
+    0 -2px 0 var(--brand-grey-med),
+    2px 2px 0 var(--brand-grey-med),
+   -2px -2px 0 var(--brand-grey-med),
+    2px -2px 0 var(--brand-grey-med),
+   -2px 2px 0 var(--brand-grey-med),
+    1px 0 0 var(--brand-grey-med),
+   -1px 0 0 var(--brand-grey-med),
+    0 1px 0 var(--brand-grey-med),
+    0 -1px 0 var(--brand-grey-med),
+    1px 1px 0 var(--brand-grey-med),
+   -1px -1px 0 var(--brand-grey-med),
+    1px -1px 0 var(--brand-grey-med),
+   -1px 1px 0 var(--brand-grey-med)
 }
