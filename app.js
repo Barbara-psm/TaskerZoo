@@ -179,13 +179,17 @@ app.get('/dashboard', async (req, res) => {
     }
 
     try {
-        // Obtener la fecha de hoy
+        // Obtener la fecha de hoy (inicio del día)
         const hoy = new Date();
         hoy.setHours(0, 0, 0, 0);
 
+        // Calcular el final del día (inicio del día siguiente)
+        const finDia = new Date(hoy);
+        finDia.setDate(finDia.getDate() + 1);
+
         // Consulta para obtener eventos e incidencias
         const eventosHoy = await Evento.find({
-            fecha: { $gte: hoy, $lt: new Date(hoy.getTime() + 24 * 60 * 60 * 1000) }
+            fecha: { $gte: hoy, $lt: finDia }
         }).sort({ hora: 1 });
 
         const incidenciasPendientes = await Incidencia.find({ estado: 'pendiente' })
@@ -193,8 +197,10 @@ app.get('/dashboard', async (req, res) => {
             .sort({ fecha: -1 })
             .limit(5);
 
-        // Consulta para el aforo de hoy
-        const aforoHoy = await Aforo.findOne({ fecha: hoy });
+        // Consulta para el aforo de hoy usando rango de fecha
+        const aforoHoy = await Aforo.findOne({
+            fecha: { $gte: hoy, $lt: finDia }
+        });
         const entradasHoy = aforoHoy ? aforoHoy.entradasVendidas : 0;
 
         res.render('dashboard', {
@@ -204,7 +210,7 @@ app.get('/dashboard', async (req, res) => {
             nombreZoo: zooConfig.nombre,
             eventosHoy: eventosHoy || [],
             incidenciasPendientes: incidenciasPendientes || [],
-            backgroundImages: backgroundsConfig.images,
+            backgroundImages: JSON.stringify(backgroundsConfig.images),
             entradasHoy: entradasHoy // Pasar el número de entradas
         });
 

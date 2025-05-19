@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Comfortaa:wght@300..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Nabla&family=Oswald:wght@200..700&family=Oxanium:wght@200..800&family=Play:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
-
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Comfortaa:wght@300..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Nabla&family=Oswald:wght@200..700&family=Oxanium:wght@200..800&family=Play:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 *, ::before, ::after{
   --tw-border-spacing-x: 0;
@@ -1398,12 +1396,12 @@ video {
   border-left-width: 4px;
 }
 
-.border-t-8{
-  border-top-width: 8px;
-}
-
 .border-t{
   border-top-width: 1px;
+}
+
+.border-t-8{
+  border-top-width: 8px;
 }
 
 .border-\[\#477963\]{
@@ -1826,6 +1824,14 @@ video {
 
 .text-center{
   text-align: center;
+}
+
+.font-poppins{
+  font-family: Poppins, sans-serif;
+}
+
+.font-rubik{
+  font-family: Rubik, sans-serif;
 }
 
 .font-sans{

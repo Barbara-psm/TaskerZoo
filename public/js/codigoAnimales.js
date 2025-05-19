@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (res.ok) {
-                alert('Animal añadido correctamente.');
                 form.reset();
                 window.location.reload();
             } else {

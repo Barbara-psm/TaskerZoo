@@ -20,9 +20,12 @@ module.exports = {
         'animundo-yellow': '#ffd700',
         'animundo-orange': '#ff8c00',
         'animundo-blue': '#1e90ff',
+      },
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+        rubik: ['Rubik', 'sans-serif'],
       }
     },
   },
   plugins: [],
 }
-

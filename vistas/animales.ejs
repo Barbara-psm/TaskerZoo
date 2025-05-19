@@ -21,7 +21,7 @@
             <%- include('./partials/header.ejs', { nombreEmpleado: nombreEmpleado }) %>
 
                 <div class="max-w-full overflow-x-auto">
-                    <h1 class="text-2xl font-bold text-gray-800 mb-4">Gestión de Animales</h1>
+                    <h1 class="font-rubik text-2xl font-bold text-gray-800 mb-4">Gestión de Animales</h1>
 
                     <!-- Formulario para añadir un animal -->
                     <div class="bg-white p-4 md:p-6 rounded-lg shadow max-w-5xl mx-auto">
@@ -33,13 +33,13 @@
                                 <path d="M8 12h8" />
                                 <path d="M12 8v8" />
                             </svg>
-                            <h2 class="text-lg font-semibold">Añadir Nuevo Animal</h2>
+                            <h2 class="text-lg font-rubik font-semibold">Añadir Nuevo Animal</h2>
                         </div>
                         <form id="formAñadirAnimal"
                             class="space-y-4 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                             <!-- Nombre -->
                             <div>
-                                <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                                <label for="nombre" class="block text-sm font-rubik font-medium text-gray-700 mb-1">Nombre</label>
                                 <input type="text" id="nombre" name="nombre" placeholder="Nombre del animal" required
                                     class="border border-gray-300 rounded px-4 py-2 w-full" />
                             </div>
@@ -47,7 +47,7 @@
                             <!-- Especie -->
                             <div>
                                 <label for="especie"
-                                    class="block text-sm font-medium text-gray-700 mb-1">Especie</label>
+                                    class="block text-sm font-rubik font-medium text-gray-700 mb-1">Especie</label>
                                 <input type="text" id="especie" name="especie" placeholder="Especie" required
                                     class="border border-gray-300 rounded px-4 py-2 w-full" />
                             </div>
@@ -55,7 +55,7 @@
                             <!-- Familia Científica -->
                             <div>
                                 <label for="familiaCientifica"
-                                    class="block text-sm font-medium text-gray-700 mb-1">Familia</label>
+                                    class="block text-sm font-rubik font-medium text-gray-700 mb-1">Familia</label>
                                 <select id="familiaCientifica" name="familiaCientifica" required
                                     class="border border-gray-300 rounded px-4 py-2 w-full">
                                     <option value="">Seleccione familia</option>
@@ -69,7 +69,7 @@
 
                             <!-- Edad -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Edad</label>
+                                <label class="block text-sm font-rubik font-medium text-gray-700 mb-1">Edad</label>
                                 <div class="flex flex-col space-y-2">
                                     <input type="number" id="edad" name="edad" placeholder="Edad" required
                                         class="border border-gray-300 rounded px-4 py-2 w-full" />
@@ -84,7 +84,7 @@
 
                             <!-- Sexo -->
                             <div>
-                                <label for="sexo" class="block text-sm font-medium text-gray-700 mb-1">Sexo</label>
+                                <label for="sexo" class="block text-sm font-rubik font-medium text-gray-700 mb-1">Sexo</label>
                                 <select id="sexo" name="sexo" required
                                     class="border border-gray-300 rounded px-4 py-2 w-full">
                                     <option value="">Seleccione sexo</option>
@@ -96,7 +96,7 @@
 
                             <!-- Zona -->
                             <div>
-                                <label for="zona" class="block text-sm font-medium text-gray-700 mb-1">Zona</label>
+                                <label for="zona" class="block text-sm font-rubik font-medium text-gray-700 mb-1">Zona</label>
                                 <select id="zona" name="zona" required
                                     class="border border-gray-300 rounded px-4 py-2 w-full">
                                     <option value="">Seleccione una zona</option>
@@ -110,7 +110,7 @@
 
                             <div class="md:col-span-2 lg:col-span-3 pt-2">
                                 <button type="submit"
-                                    class="bg-[#C2A255] text-white px-6 py-2 rounded hover:bg-[#a3843a] transition w-full md:w-auto">
+                                    class="bg-[#C2A255] text-white font-rubik px-6 py-2 rounded hover:bg-[#a3843a] transition w-full md:w-auto">
                                     Añadir Animal
                                 </button>
                             </div>
@@ -131,12 +131,12 @@
                                 <path d="M6 6.5a.495.495 0 0 1 .5-.5" />
                                 <path d="m9 12-2 2" />
                             </svg>
-                            <h2 class="text-lg font-semibold">Animales Registrados</h2>
+                            <h2 class="text-lg font-rubik font-semibold">Animales Registrados</h2>
                         </div>
 
                         <!-- Filtros -->
                         <div class="mb-4 flex flex-col md:flex-row items-center gap-4">
-                            <p class="text-gray-700 font-medium whitespace-nowrap">Filtrar:</p>
+                            <p class="text-gray-700 font-rubik font-medium whitespace-nowrap">Filtrar:</p>
                             <select id="filtroZona" class="border border-gray-300 rounded px-4 py-2 w-full md:w-48">
                                 <option value="">Todas las zonas</option>
                                 <% zonas.forEach(zona=> { %>
@@ -150,7 +150,7 @@
                         <!-- Tabla de animales -->
                         <div class="min-w-full overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
+                                <thead class="bg-gray-50 font-poppins">
                                     <tr>
                                         <th
                                             class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
