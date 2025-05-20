@@ -81,8 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Mostrar el formulario de login
             formularioLogin.classList.remove('hidden');
-
-            alert('Empleado creado exitosamente.');
+            
         } catch (error) {
             console.error('Error al registrar empleado:', error);
             mensajeErrorRegistro.innerHTML = "Este correo no está disponible";

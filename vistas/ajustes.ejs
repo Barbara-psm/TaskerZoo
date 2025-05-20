@@ -151,6 +151,55 @@
         document.getElementById('formCambiarContraseña').classList.add('hidden');
       });
 
+      // Manejar el envío del formulario de cambio de contraseña
+      document.getElementById('formCambiarContraseña').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const contraseñaActual = formData.get('contraseñaActual');
+        const nuevaContraseña = formData.get('nuevaContraseña');
+        const confirmarContraseña = formData.get('confirmarContraseña');
+
+        // Validación básica
+        if (nuevaContraseña !== confirmarContraseña) {
+          alert('Las contraseñas nuevas no coinciden');
+          return;
+        }
+
+        try {
+          const response = await fetch('/cambiar-password', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              contraseñaActual,
+              nuevaContraseña
+            }),
+            credentials: 'include'
+          });
+
+          // Manejar respuesta no JSON
+          if (!response.headers.get('content-type')?.includes('application/json')) {
+            const text = await response.text();
+            throw new Error(text || 'Respuesta no JSON del servidor');
+          }
+
+          const data = await response.json();
+
+          if (response.ok) {
+            alert('Contraseña cambiada con éxito');
+            document.getElementById('formCambiarContraseña').classList.add('hidden');
+            this.reset();
+          } else {
+            alert(data.error || 'Error al cambiar la contraseña');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error: ' + (error.message || 'Error al conectar con el servidor'));
+        }
+      });
+
       // Manejar eliminación de cuenta
       document.getElementById('eliminarCuentaBtn').addEventListener('click', function () {
         document.getElementById('confirmarEliminarModal').classList.remove('hidden');
@@ -168,7 +217,7 @@
           });
 
           if (response.ok) {
-            window.location.href = '/';
+            window.location.href = '/taskerzoo';
           } else {
             alert('Error al eliminar la cuenta');
           }

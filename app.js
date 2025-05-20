@@ -781,24 +781,23 @@ app.get('/ajustes', async (req, res) => {
 });
 
 // Cambiar contraseña
-app.post('/cambiar-contraseña', async (req, res) => {
+app.post('/cambiar-password', async (req, res) => {
     try {
         const { contraseñaActual, nuevaContraseña } = req.body;
         const empleado = await Empleado.findById(req.session.usuario.id);
 
         // Verificar contraseña actual
-        const contraseñaValida = await bcrypt.compare(contraseñaActual, empleado.contraseña);
-        if (!contraseñaValida) {
+        if (!await empleado.compararContraseña(contraseñaActual)) {
             return res.status(400).json({ error: 'Contraseña actual incorrecta' });
         }
 
-        // Actualizar contraseña
+        // Actualizar y guardar (usando el método del modelo para encriptarla)
         empleado.contraseña = nuevaContraseña;
         await empleado.save();
 
         res.json({ success: true });
     } catch (error) {
-        console.error('Error al cambiar contraseña:', error);
+        console.error('Error:', error);
         res.status(500).json({ error: 'Error al cambiar contraseña' });
     }
 });
