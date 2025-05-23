@@ -16,17 +16,17 @@
     <!-- Barra de navegación -->
     <%- include('./partials/nav.ejs', { paginaActual: '' }) %>
 
-        <!-- Contenido principal - Centrado verticalmente -->
+        <!-- Contenido principal -->
         <main class="flex-1 md:ml-56 flex items-center justify-center min-h-[calc(100vh-4rem)]">
             <!-- Fondo animado -->
             <div id="bg-slider"
                 class="absolute inset-0 w-full h-full pointer-events-none z-0 transition-opacity duration-1000 opacity-20">
-                <img id="bg-image" src="/imgs/fondo1.jpg" class="w-full h-full object-cover select-none"
+                <img id="bg-image" src="" class="w-full h-full object-cover select-none"
                     alt="Imagen de fondo animada" />
             </div>
 
             <div class="relative z-10 w-full px-4">
-                <!-- Contenido del error 404 -->
+                <!-- Contenido -->
                 <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl overflow-hidden">
                     <div class="p-8 md:p-12 flex flex-col md:flex-row items-center">
                         <!-- Logo -->
@@ -41,17 +41,12 @@
                             </h1>
                             <p class="text-lg text-gray-600 mb-6">
                                 Lo sentimos, la página que estás buscando no existe o ha sido movida.
-                                Puedes volver al dashboard o contactar con soporte si necesitas ayuda.
                             </p>
 
                             <div class="flex flex-col sm:flex-row gap-4">
                                 <a href="/dashboard"
                                     class="bg-[#A2B04C] text-white px-6 py-3 rounded-lg hover:bg-[#8a9741] transition text-center">
                                     Volver al Dashboard
-                                </a>
-                                <a href="/contacto"
-                                    class="bg-[#C2A255] text-white px-6 py-3 rounded-lg hover:bg-[#aa8d4b] transition text-center">
-                                    Contactar con Soporte
                                 </a>
                             </div>
                         </div>
@@ -60,21 +55,15 @@
             </div>
         </main>
 
-        <!-- Script para el fondo animado -->
+        <!-- Fondo con imágenes  -->
         <script>
-            const images = [
-                'https://geoinnova.org/wp-content/uploads/2021/08/papel-zoologicos-siglo-XXI.jpg',
-                'https://www.thenewbarcelonapost.com/wp-content/uploads/2022/08/Chimpance%CC%81-con-un-helado-de-fruta-para-el-calor-1170x780.jpeg',
-                'https://www.zoomadrid.com/content/dam/zoo/blog/export/sites/default/files/Jirafa-1024x696.jpg',
-                'https://www.aladinia.com/blog/wp-content/uploads/2017/07/zoo-aquarium-compressor-825x510.jpg',
-                'https://zoo.guadalajara.es/wp-content/uploads/2023/05/peakpx.jpg',
-                'https://zoobarcelona.cat/sites/default/files/animal/2019-04/Hippopotamus%20amphibius3.jpg'
-            ];
-
-            let current = 0;
+            // Configuración del slideshow
             const bgImage = document.getElementById('bg-image');
             const bgSlider = document.getElementById('bg-slider');
+            const images = <%- backgroundImages %>;
+            let current = 0;
 
+            // Efectos de transición
             function fadeOut(element, duration = 1000) {
                 element.style.transition = `opacity ${duration}ms`;
                 element.style.opacity = 0;
@@ -82,7 +71,7 @@
 
             function fadeIn(element, duration = 1000) {
                 element.style.transition = `opacity ${duration}ms`;
-                element.style.opacity = 0.4;
+                element.style.opacity = 0.3;
             }
 
             function nextImage() {
@@ -94,7 +83,25 @@
                 }, 1000);
             }
 
-            setInterval(nextImage, 6000);
+            // Precargar imágenes
+            function preloadImages() {
+                images.forEach(src => {
+                    const img = new Image();
+                    img.src = src;
+                });
+            }
+
+            // Iniciar el slideshow
+            document.addEventListener('DOMContentLoaded', () => {
+                if (images && images.length > 0) {
+                    preloadImages();
+                    bgImage.src = images[0];
+                    fadeIn(bgSlider);
+                    setInterval(nextImage, 6000);
+                } else {
+                    console.warn('No hay imágenes para el slideshow');
+                }
+            });
         </script>
 
 </body>

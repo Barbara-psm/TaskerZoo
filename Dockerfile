@@ -5,7 +5,6 @@ WORKDIR /app
 
 # Copiar archivos de configuración y entorno
 COPY package*.json ./
-#COPY .env .env
 
 # Instalar todas las dependencias necesarias para la compilación (Tailwind, etc.)
 RUN npm install

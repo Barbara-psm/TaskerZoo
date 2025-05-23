@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert('Incidencia reportada correctamente.');
                     formIncidencia.reset();
                     window.location.reload(); // Recargar para mostrar la nueva incidencia
                 } else {

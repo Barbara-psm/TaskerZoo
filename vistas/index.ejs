@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Explora el zoológico Animundo y compra tus entradas fácilmente. Vive una experiencia educativa rodeado de animales y naturaleza.">
     <title>
         <%= title %>
     </title>
@@ -16,141 +18,307 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 
-<body class="bg-gray-50 font-sans">
+<body class="bg-animundo-beige font-rubik text-animundo-brown">
 
-    <!-- Header -->
-    <header
-        class="bg-gradient-to-br from-animundo-green to-animundo-blue text-white py-6 px-4 flex justify-between items-center">
-        <div>
-            <h1 class="text-3xl md:text-5xl font-bold">ANIMUNDO</h1>
-            <p class="text-md md:text-xl opacity-90">Un mundo salvaje por descubrir</p>
+    <!-- Hero Section con la imagen de fondo -->
+    <header class="relative h-screen min-h-[1100px] overflow-hidden">
+        <!-- Imagen de fondo -->
+        <div class="absolute inset-0 bg-animundo-brown/50">
+            <img src="/img/fondo-animundo.png" alt="Animales del zoológico"
+                class="w-full h-full object-cover object-center">
         </div>
-        <a href="/taskerzoo"
-            class="bg-white text-animundo-green font-bold rounded-lg shadow hover:bg-gray-100 transition">
-            <div class="flex justify-between items-center px-4 py-2 gap-2">
-                <span>Gestiona tu zoo</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-log-in-icon lucide-log-in">
-                    <path d="m10 17 5-5-5-5" />
-                    <path d="M15 12H3" />
-                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-                </svg>
+
+        <!-- Contenido superpuesto -->
+        <div class="relative z-10 h-full flex flex-col">
+            <!-- Barra superior con logo y botón -->
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="bg-white/90 rounded-lg px-4 py-2 shadow-lg">
+                    <h1 class="text-4xl font-bold text-animundo-dark-orange">ANIMUNDO</h1>
+                    <p class="text-sm text-animundo-blue-med">Un mundo salvaje por descubrir</p>
+                </div>
+
+                <a href="/taskerzoo"
+                    class="bg-animundo-light-orange hover:bg-animundo-dark-orange text-white font-bold rounded-lg shadow-lg transition-all transform hover:scale-105">
+                    <div class="flex items-center px-6 py-3 gap-2">
+                        <span class="text-lg">Gestiona tu zoo</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-log-in">
+                            <path d="m10 17 5-5-5-5" />
+                            <path d="M15 12H3" />
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                        </svg>
+                    </div>
+                </a>
             </div>
-        </a>
+
+            <!-- Texto central en el hero -->
+            <div class="flex-grow flex items-center justify-center text-center px-4">
+                <div class="bg-white/90 rounded-xl p-8 max-w-3xl shadow-2xl">
+                    <h2 class="text-4xl md:text-5xl font-bold text-animundo-blue-med mb-4">Vive una aventura salvaje
+                    </h2>
+                    <p class="text-xl text-animundo-brown mb-6">
+                        Descubre más de 200 especies en nuestro parque de conservación natural
+                    </p>
+                    <a id="irAComprarBtn" href="#formularioEntradas"
+                        class="smooth-scroll inline-block bg-gradient-to-r from-animundo-light-orange to-animundo-dark-orange hover:from-animundo-dark-orange hover:to-animundo-light-orange text-white font-bold text-lg py-3 px-8 rounded-full transition-all hover:shadow-lg">
+                        Comprar entradas
+                    </a>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <!-- Sección 1: Publicidad -->
-    <section class="w-full bg-white py-12 px-4 text-center">
-        <div class="container mx-auto max-w-3xl">
-            <h2 class="text-3xl font-bold text-animundo-green mb-4">Bienvenido a Animundo</h2>
-            <p class="text-lg text-gray-700">
-                Explora un mundo lleno de vida salvaje, aprende sobre especies increíbles y vive experiencias
-                inolvidables en nuestro zoológico ubicado en el corazón de la ciudad.
+    <!-- Sección Intro -->
+    <section class="py-16 bg-gradient-to-b from-animundo-light-blue to-animundo-blue-med">
+        <div class="container mx-auto px-4 max-w-5xl text-center">
+            <h2 class="text-3xl font-bold text-white mb-6">Bienvenido a Animundo</h2>
+            <p class="text-xl text-animundo-beige leading-relaxed">
+                Más que un zoológico, un centro de conservación donde cada visita contribuye a la protección de especies
+                en peligro.
+                Explora hábitats naturales cuidadosamente diseñados y conoce a nuestros increíbles residentes.
             </p>
         </div>
     </section>
 
-    <!-- Sección 2: Mapa -->
-    <section class="w-full bg-gray-100 py-12 px-4">
-        <div class="container mx-auto max-w-4xl bg-white rounded-xl shadow-md p-6">
-            <h2 class="text-2xl font-bold text-animundo-green border-b-2 border-animundo-yellow pb-2 mb-4">Ubicación
-            </h2>
-            <p class="mb-4">Encuéntranos en el corazón de la ciudad</p>
-            <div id="esriMap" class="h-96 rounded-lg"></div>
-            <p class="text-center font-bold mt-4">
+    <!-- Sección de animales del zoo -->
+    <section id="animalesZoo" class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-animundo-blue-med mb-12">Conoce a nuestros animales</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-12">
+                <!-- Tarjetas de animales -->
+                <!-- Animal 1 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/mapache-animundo.jpg" alt="Mapache" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 2 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/jirafa-animundo.jpg" alt="Jirafa" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 3 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/pingüinos-animundo.webp" alt="Pingüinos" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 4 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/dragon-de-komodo-animundo.png" alt="Dragón de Komodo"
+                        class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 5 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/leopardo-animundo.jpg" alt="Leopardo" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 6 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/leon-marino-animundo.jpg" alt="León marino" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 7 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/lemures-animundo.jpg" alt="Lemures" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 8 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/pavo-real-animundo.jpg" alt="Pavo real" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 9 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/oso-panda-animundo.webp" alt="Oso panda" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 10 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/tucanes-animundo.webp" alt="Tucanes" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 11 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/flamencos-animundo.jpg" alt="Flamencos" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Animal 12 -->
+                <div
+                    class="group bg-white rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                    <img src="/img/mono-titi-animundo.webp" alt="Mono tití" class="w-full h-full object-cover">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Mapa -->
+    <section class="w-full bg-animundo-beige py-16 px-4">
+        <div
+            class="container mx-auto max-w-4xl bg-white rounded-xl shadow-lg p-8 border-2 border-animundo-light-orange">
+            <h2 class="text-3xl font-bold text-animundo-blue-med border-b-2 border-animundo-light-orange pb-3 mb-6">
+                Ubicación</h2>
+            <p class="mb-6 text-lg text-animundo-brown">Encuéntranos en el corazón de la ciudad</p>
+            <div id="esriMap" class="h-96 rounded-lg border-2 border-animundo-brown"></div>
+            <p class="text-center font-bold mt-6 text-animundo-dark-orange text-lg">
                 Calle Animalia, 123 · Parque Natural Sierra Verde · 28045 Madrid, España
             </p>
         </div>
     </section>
 
-    <!-- Sección 3: Formulario de entradas -->
-    <section class="w-full bg-white py-12 px-4">
-        <div class="container mx-auto max-w-4xl bg-white rounded-xl shadow-md p-6">
-            <h2 class="text-2xl font-bold text-animundo-green border-b-2 border-animundo-yellow pb-2 mb-6">Compra tus
-                entradas</h2>
-            <form id="formularioEntradas" class="space-y-4">
-                <!-- Fecha de visita con Flatpickr -->
-                <div>
-                    <label for="fechaVisita" class="block text-gray-700 font-medium mb-1">Fecha de visita</label>
+    <!-- Sección Formulario -->
+    <section id="formularioEntradas" class="w-full bg-animundo-beige py-16 px-4">
+        <div
+            class="container mx-auto max-w-4xl bg-white rounded-xl shadow-lg p-8 border-2 border-animundo-light-orange">
+            <h2 class="text-3xl font-bold text-animundo-blue-med border-b-2 border-animundo-light-orange pb-3 mb-8">
+                Compra tus entradas</h2>
+            <form id="formularioEntradas" class="space-y-6">
+                <!-- Fecha de visita -->
+                <div class="bg-animundo-beige/50 p-4 rounded-lg border border-animundo-light-orange/30">
+                    <label for="fechaVisita" class="block text-animundo-brown font-bold mb-2 text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="inline mr-2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        Fecha de visita
+                    </label>
                     <input type="text" id="fechaVisita"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                        class="w-full px-4 py-3 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med focus:border-transparent text-lg bg-white"
                         placeholder="Selecciona una fecha" required>
                 </div>
 
                 <!-- Cantidad de entradas -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Adultos -->
-                    <div>
-                        <label for="cantidadAdultos" class="block text-gray-700 font-medium mb-1">Adultos (12+
-                            años)</label>
-                        <input type="number" id="cantidadAdultos" min="0" value="1"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
-                            required>
-                        <p class="text-sm text-gray-500 mt-1">€15 por entrada</p>
-                    </div>
+                <div class="bg-animundo-beige/50 p-4 rounded-lg border border-animundo-light-orange/30">
+                    <h3 class="text-xl font-bold text-animundo-blue-med mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="inline mr-2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                        Selecciona tus entradas
+                    </h3>
 
-                    <!-- Niños -->
-                    <div>
-                        <label for="cantidadNinos" class="block text-gray-700 font-medium mb-1">Niños (3-11
-                            años)</label>
-                        <input type="number" id="cantidadNinos" min="0" value="0"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
-                        <p class="text-sm text-gray-500 mt-1">€10 por entrada</p>
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <!-- Adultos -->
+                        <div class="bg-white p-3 rounded-lg border border-animundo-light-blue/50 shadow-sm">
+                            <label for="cantidadAdultos"
+                                class="block text-animundo-brown font-bold mb-2">Adultos</label>
+                            <div class="flex items-center">
+                                <span class="text-sm text-animundo-blue-med mr-2">(12+ años)</span>
+                                <input type="number" id="cantidadAdultos" min="0" value="1"
+                                    class="w-full px-3 py-2 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med text-center"
+                                    required>
+                            </div>
+                            <p class="text-animundo-dark-orange font-semibold mt-2">€15 <span
+                                    class="text-sm text-animundo-brown">por entrada</span></p>
+                        </div>
 
-                    <!-- Seniors -->
-                    <div>
-                        <label for="cantidadSeniors" class="block text-gray-700 font-medium mb-1">Seniors (65+
-                            años)</label>
-                        <input type="number" id="cantidadSeniors" min="0" value="0"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
-                        <p class="text-sm text-gray-500 mt-1">€12 por entrada</p>
+                        <!-- Niños -->
+                        <div class="bg-white p-3 rounded-lg border border-animundo-light-blue/50 shadow-sm">
+                            <label for="cantidadNinos" class="block text-animundo-brown font-bold mb-2">Niños</label>
+                            <div class="flex items-center">
+                                <span class="text-sm text-animundo-blue-med mr-2">(3-11 años)</span>
+                                <input type="number" id="cantidadNinos" min="0" value="0"
+                                    class="w-full px-3 py-2 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med text-center">
+                            </div>
+                            <p class="text-animundo-dark-orange font-semibold mt-2">€10 <span
+                                    class="text-sm text-animundo-brown">por entrada</span></p>
+                        </div>
+
+                        <!-- Seniors -->
+                        <div class="bg-white p-3 rounded-lg border border-animundo-light-blue/50 shadow-sm">
+                            <label for="cantidadSeniors"
+                                class="block text-animundo-brown font-bold mb-2">Seniors</label>
+                            <div class="flex items-center">
+                                <span class="text-sm text-animundo-blue-med mr-2">(65+ años)</span>
+                                <input type="number" id="cantidadSeniors" min="0" value="0"
+                                    class="w-full px-3 py-2 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med text-center">
+                            </div>
+                            <p class="text-animundo-dark-orange font-semibold mt-2">€12 <span
+                                    class="text-sm text-animundo-brown">por entrada</span></p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Datos del comprador -->
-                <div class="pt-4 border-t border-gray-200">
-                    <h3 class="text-lg font-bold text-animundo-blue mb-3">Datos del comprador</h3>
+                <div class="bg-animundo-beige/50 p-4 rounded-lg border border-animundo-light-orange/30">
+                    <h3 class="text-xl font-bold text-animundo-blue-med mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="inline mr-2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Tus datos
+                    </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <!-- Nombre -->
                         <div>
-                            <label for="nombre" class="block text-gray-700 font-medium mb-1">Nombre completo</label>
+                            <label for="nombre" class="block text-animundo-brown font-medium mb-1">Nombre
+                                completo</label>
                             <input type="text" id="nombre" name="nombre"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                                class="w-full px-4 py-2 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med bg-white"
                                 required>
                         </div>
 
                         <!-- Email -->
                         <div>
-                            <label for="correo" class="block text-gray-700 font-medium mb-1">Correo electrónico</label>
+                            <label for="correo" class="block text-animundo-brown font-medium mb-1">Correo
+                                electrónico</label>
                             <input type="email" id="correo" name="correo"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                                class="w-full px-4 py-2 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med bg-white"
                                 required>
                         </div>
                     </div>
 
                     <!-- Teléfono -->
                     <div class="mt-4">
-                        <label for="telefono" class="block text-gray-700 font-medium mb-1">Teléfono</label>
+                        <label for="telefono" class="block text-animundo-brown font-medium mb-1">Teléfono</label>
                         <input type="tel" id="telefono" name="telefono"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                            class="w-full px-4 py-2 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med bg-white"
                             required>
                     </div>
                 </div>
 
                 <!-- Método de pago -->
-                <div class="pt-4 border-t border-gray-200">
-                    <h3 class="text-lg font-bold text-animundo-blue mb-3">Método de pago</h3>
+                <div class="bg-animundo-beige/50 p-4 rounded-lg border border-animundo-light-orange/30">
+                    <h3 class="text-xl font-bold text-animundo-blue-med mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="inline mr-2">
+                            <line x1="12" y1="19" x2="12" y2="5"></line>
+                            <path d="M5 12l7-7 7 7"></path>
+                        </svg>
+                        Método de pago
+                    </h3>
 
                     <div class="space-y-4">
                         <!-- Selección de método -->
                         <div>
-                            <label for="metodo-pago" class="block text-gray-700 font-medium mb-1">Seleccione
-                                método</label>
+                            <label for="metodo-pago" class="block text-animundo-brown font-medium mb-2">Seleccione
+                                método de pago</label>
                             <select id="metodo-pago" name="metodo-pago"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent"
+                                class="w-full px-4 py-3 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med bg-white"
                                 required>
                                 <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="tarjeta">Tarjeta de crédito/débito</option>
@@ -158,26 +326,28 @@
                             </select>
                         </div>
 
-                        <!-- Detalles de tarjeta (se muestra solo si selecciona tarjeta) -->
-                        <div id="datos-tarjeta" class="hidden space-y-4 bg-gray-50 p-4 rounded-lg">
+                        <!-- Detalles de tarjeta -->
+                        <div id="datos-tarjeta"
+                            class="hidden space-y-4 bg-white p-4 rounded-lg border border-animundo-light-blue/50 shadow-sm">
                             <div>
-                                <label for="num-tarjeta" class="block text-gray-700 font-medium mb-1">Número de
+                                <label for="num-tarjeta" class="block text-animundo-brown font-medium mb-1">Número de
                                     tarjeta</label>
-                                <input type="text" id="num-tarjeta" name="num-tarjeta"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
+                                <input type="text" id="num-tarjeta" name="num-tarjeta" placeholder="1234 5678 9012 3456"
+                                    class="w-full px-4 py-2 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med">
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label for="fecha-caducidad" class="block text-gray-700 font-medium mb-1">Fecha de
-                                        caducidad</label>
+                                    <label for="fecha-caducidad"
+                                        class="block text-animundo-brown font-medium mb-1">Fecha de caducidad</label>
                                     <input type="month" id="fecha-caducidad" name="fecha-caducidad"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
+                                        class="w-full px-4 py-2 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med">
                                 </div>
                                 <div>
-                                    <label for="cvc" class="block text-gray-700 font-medium mb-1">CVC</label>
-                                    <input type="text" id="cvc" name="cvc" maxlength="3"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-animundo-blue focus:border-transparent">
+                                    <label for="cvc" class="block text-animundo-brown font-medium mb-1">Código
+                                        CVC</label>
+                                    <input type="text" id="cvc" name="cvc" maxlength="3" placeholder="123"
+                                        class="w-full px-4 py-2 border-2 border-animundo-light-blue rounded-lg focus:ring-2 focus:ring-animundo-blue-med">
                                 </div>
                             </div>
                         </div>
@@ -185,16 +355,24 @@
                 </div>
 
                 <!-- Resumen y botón de compra -->
-                <div class="pt-4 border-t border-gray-200">
-                    <div id="resumen-compra" class="hidden mb-4 p-4 bg-gray-50 rounded-lg">
-                        <h4 class="font-bold text-animundo-green mb-2">Resumen de tu compra</h4>
-                        <div id="detalles-resumen" class="text-sm text-gray-700"></div>
-                        <div id="total-resumen" class="mt-2 font-bold"></div>
+                <div class="pt-4">
+                    <div id="resumen-compra"
+                        class="hidden mb-6 p-4 bg-white rounded-lg border-2 border-animundo-light-orange shadow-md">
+                        <h4 class="text-xl font-bold text-animundo-blue-med mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="inline mr-2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                            Resumen de tu compra
+                        </h4>
+                        <div id="detalles-resumen" class="text-animundo-brown"></div>
+                        <div id="total-resumen" class="mt-3 text-2xl font-bold text-animundo-dark-orange"></div>
                     </div>
 
                     <button type="submit"
-                        class="w-full bg-animundo-orange hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
-                        Comprar entradas
+                        class="w-full bg-gradient-to-r from-animundo-light-orange to-animundo-dark-orange hover:from-animundo-dark-orange hover:to-animundo-light-orange text-white font-bold py-4 px-6 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-[1.02] text-lg">
+                        Confirmar compra
                     </button>
                 </div>
             </form>
@@ -202,31 +380,40 @@
     </section>
 
     <!-- Sección 4: Tarifas y horarios -->
-    <section class="w-full bg-gray-100 py-12 px-4">
-        <div class="container mx-auto max-w-4xl bg-white rounded-xl shadow-md p-6">
-            <h2 class="text-2xl font-bold text-animundo-green border-b-2 border-animundo-yellow pb-2 mb-6">Horarios y
-                tarifas</h2>
-            <div class="grid md:grid-cols-2 gap-8">
+    <section class="w-full bg-gradient-to-b from-animundo-blue-med to-animundo-light-blue py-16 px-4">
+        <div
+            class="container mx-auto max-w-4xl bg-white rounded-xl shadow-lg p-8 border-2 border-animundo-light-orange">
+            <h2 class="text-3xl font-bold text-animundo-blue-med border-b-2 border-animundo-light-orange pb-3 mb-8">
+                Horarios y tarifas</h2>
+            <div class="grid md:grid-cols-2 gap-10">
                 <div>
-                    <h3 class="text-xl font-bold text-animundo-blue mb-4">Horarios</h3>
-                    <p class="mb-2"><span class="font-semibold">Lunes a Viernes:</span> 9:00 - 18:00</p>
-                    <p><span class="font-semibold">Fines de semana:</span> 8:00 - 20:00</p>
+                    <h3 class="text-2xl font-bold text-animundo-dark-orange mb-4">Horarios</h3>
+                    <div class="space-y-3 text-lg">
+                        <p><span class="font-semibold">Martes a Viernes:</span> 9:00 - 18:00</p>
+                        <p><span class="font-semibold">Sábados y Domingos:</span> 8:00 - 20:00</p>
+                        <p><span class="font-semibold">Lunes:</span> Cerrado por mantenimiento</p>
+                    </div>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold text-animundo-blue mb-4">Tarifas</h3>
-                    <p class="mb-2"><span class="font-semibold">Adultos:</span> €15</p>
-                    <p class="mb-2"><span class="font-semibold">Niños:</span> €10</p>
-                    <p><span class="font-semibold">Seniors:</span> €12</p>
+                    <h3 class="text-2xl font-bold text-animundo-dark-orange mb-4">Tarifas</h3>
+                    <div class="space-y-3 text-lg">
+                        <p><span class="font-semibold">Adultos (12+ años):</span> €15</p>
+                        <p><span class="font-semibold">Niños (3-11 años):</span> €10</p>
+                        <p><span class="font-semibold">Seniors (65+ años):</span> €12</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 text-center">
+    <footer class="bg-animundo-brown text-animundo-beige py-12 text-center">
         <div class="container mx-auto px-4">
-            <p class="mb-2">© 2025 Animundo - Todos los derechos reservados</p>
-            <p>Contacto: info@animundo.com · Tel: +34 123 456 789</p>
+            <div class="flex justify-center mb-6">
+                <img src="/img/logo-animundo.png" alt="Logo Animundo" class="h-16">
+            </div>
+            <p class="mb-2 text-lg">© 2025 Animundo - Centro de Conservación Animal</p>
+            <p class="mb-4 text-lg">Contacto: info@animundo.com · Tel: +34 123 456 789</p>
         </div>
     </footer>
 
@@ -256,8 +443,8 @@
                 minDate: "today",
                 disable: [
                     function (date) {
-                        // Deshabilitar días específicos (ej. lunes)
-                        return (date.getDay() === 2); // 1 es lunes
+                        // Deshabilitar días específicos
+                        return (date.getDay() === 1); // 1 es el lunes
                     }
                 ]
             });
@@ -305,7 +492,7 @@
                 const totalEntradas = adultos + ninos + seniors;
 
                 try {
-                    // Validaciones mejoradas
+                    // Validaciones más completas
                     if (!fechaVisita) throw new Error('Por favor selecciona una fecha de visita');
                     if (isNaN(adultos)) throw new Error('Cantidad de adultos no válida');
                     if (isNaN(ninos)) throw new Error('Cantidad de niños no válida');
@@ -328,13 +515,69 @@
                         throw new Error(data.message || 'Error al registrar la compra');
                     }
 
-                    alert(`¡Compra realizada con éxito! ${totalEntradas} entradas registradas para el ${fechaVisita}`);
+                    // Mostrar modal en lugar de un alert
+                    const modal = document.createElement('div');
+                    modal.innerHTML = `
+            <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 transition-opacity duration-300">
+                <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center animate-[bounceIn_0.5s]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#25A8B5" stroke-width="2" class="mx-auto mb-4">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <h3 class="text-2xl font-bold text-animundo-blue-med mb-2">¡Reserva confirmada!</h3>
+                    <p class="text-animundo-brown mb-6">Gracias por tu compra. Redirigiendo...</p>
+                    <div class="w-full bg-animundo-beige rounded-full h-2.5">
+                        <div id="progressBar" class="bg-animundo-light-orange h-2.5 rounded-full" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+                    document.body.appendChild(modal);
+
+                    // Animación de la barra de progreso
+                    const progressBar = document.getElementById('progressBar');
+                    let width = 100;
+                    const interval = setInterval(() => {
+                        width -= 1;
+                        progressBar.style.width = width + '%';
+                        if (width <= 0) {
+                            clearInterval(interval);
+                            location.reload(); // Recargar la página
+                        }
+                    }, 40); // 4 segundos para el 100%
 
                 } catch (err) {
-                    console.error('Error completo:', err);
-                    alert(err.message);
+                    console.error('Error:', err);
+                    // Modal de error
+                    const errorModal = document.createElement('div');
+                    errorModal.innerHTML = `
+            <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+                <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#E66D09" stroke-width="2" class="mx-auto mb-4">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <h3 class="text-2xl font-bold text-animundo-dark-orange mb-2">Error en la reserva</h3>
+                    <p class="text-animundo-brown mb-6">${err.message}</p>
+                    <button onclick="this.parentElement.parentElement.remove()" class="px-6 py-2 bg-animundo-light-orange text-white rounded-lg hover:bg-animundo-dark-orange transition">
+                        Entendido
+                    </button>
+                </div>
+            </div>
+        `;
+                    document.body.appendChild(errorModal);
                 }
             });
+
+            const comprarBtn = document.getElementById('irAComprarBtn');
+            const destino = document.getElementById('formularioEntradas');
+
+            comprarBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevenir el comportamiento por defecto
+                destino.scrollIntoView({ behavior: 'smooth' });
+            });
+
         });
     </script>
     <!-- Flatpickr JS local -->

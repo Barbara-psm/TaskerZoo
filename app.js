@@ -849,6 +849,7 @@ app.use((req, res, next) => {
     res.status(404).render('404', {
         title: 'Página no encontrada | TaskerZoo',
         nombreZoo: zooConfig.nombre,
-        nombreEmpleado: req.session.usuario?.nombre || 'Empleado'
+        nombreEmpleado: req.session.usuario?.nombre || 'Empleado',
+        backgroundImages: JSON.stringify(backgroundsConfig.images)
     });
 });

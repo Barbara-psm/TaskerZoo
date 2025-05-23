@@ -64,8 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error('Error al guardar el suministro');
                 }
 
-                // Éxito
-                alert('Suministro añadido correctamente');
                 form.reset();
                 window.location.reload();
 
